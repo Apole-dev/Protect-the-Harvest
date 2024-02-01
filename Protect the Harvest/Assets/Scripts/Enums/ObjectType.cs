@@ -2,8 +2,8 @@
 {
     public enum ObjectType
     {
-        WEAPON,
-        SHIELD,
-        HEALTH,
+        Weapon,
+        Shield,
+        Health,
     }
 }

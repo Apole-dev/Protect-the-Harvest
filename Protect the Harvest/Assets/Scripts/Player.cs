@@ -1,15 +1,22 @@
-﻿using Managers;
+﻿using Abstracts;
+using Managers;
 using UnityEditor.Animations;
 using UnityEngine;
 
-public class Player : MainMechanics
+public class Player : MainMechanics 
 {
     private AudioManager _audioManager;
     private UIManager _uiManager;
     
     [SerializeField] private AnimatorController playerAnimator;
-    void Awake()
+
+    private void Awake()
     {
+        if (playerAnimator == null)
+        {
+            Debug.LogError("No Animator Controller set on " + gameObject.name);
+        }
+        
         _audioManager = AudioManager.Instance;
         _uiManager = UIManager.Instance;
     }
@@ -41,13 +48,17 @@ public class Player : MainMechanics
         //TODO: INCREASE HEALTH
     }
 
-    public override void Win()
+    
+    
+    public override void PlayerWin()
     {
-        //TODO: WIN ANIMATION (player animation controller)
+        //TODO: ANIMATION (player animation controller win animation)
         
-        //TODO: INCREASE COIN & SOUND (UIManager , AudioManager ) 
+        //TODO: OPEN WIN MENU
         
-        //TODO: OPEN WIN MENU (PLAYER WIN)
+        //TODO: UPDATE COINS
+        
+        //MAYBE: UPDATE LEVEL
     }
     
 }

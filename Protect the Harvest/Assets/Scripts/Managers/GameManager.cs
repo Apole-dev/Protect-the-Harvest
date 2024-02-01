@@ -1,9 +1,8 @@
-using Interfaces;
 using Singleton;
 
 namespace Managers
 {
-    public class GameManager : MonoSingleton<GameManager> , IGameManager
+    public class GameManager : MonoSingleton<GameManager> 
     {
         public void InitializeGame()
         {

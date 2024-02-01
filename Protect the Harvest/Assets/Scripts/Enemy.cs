@@ -1,4 +1,5 @@
-﻿using Managers;
+﻿using Abstracts;
+using Managers;
 using UnityEditor.Animations;
 using UnityEngine;
 
@@ -7,13 +8,19 @@ public class Enemy : MainMechanics
     private AudioManager _audioManager;
     private UIManager _uiManager;
     
-    [SerializeField] private AnimatorController playerAnimator;
-    void Awake()
+    [SerializeField] private AnimatorController enemyAnimator;
+
+    private void Awake()
     {
+        if (enemyAnimator == null)
+        {
+            Debug.LogError("No Animator Controller set on " + gameObject.name);
+        }
+        
         _audioManager = AudioManager.Instance;
         _uiManager = UIManager.Instance;
     }
-    
+
     public override void Attack()
     {
         //TODO: ANIMATION (player animation controller)
@@ -41,12 +48,8 @@ public class Enemy : MainMechanics
         //TODO: INCREASE HEALTH
     }
 
-    public override void Win()
+    public override void EnemyWin()
     {
-        //TODO: WIN ANIMATION (player animation controller)
-        
-        //TODO: INCREASE COIN & SOUND (UIManager , AudioManager ) 
-        
-        //TODO: OPEN WIN MENU (PLAYER WIN)
+        throw new System.NotImplementedException();
     }
 }

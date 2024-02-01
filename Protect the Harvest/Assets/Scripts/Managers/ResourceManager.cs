@@ -31,9 +31,9 @@ namespace Managers
 
             return objectType switch
             {
-                ObjectType.WEAPON => _gunResourceObjects,
-                ObjectType.HEALTH => _healthResourceObjects,
-                ObjectType.SHIELD => _shieldResourceObjects,
+                ObjectType.Weapon => _gunResourceObjects,
+                ObjectType.Health => _healthResourceObjects,
+                ObjectType.Shield => _shieldResourceObjects,
                 _ => _gunResourceObjects
             };
         }
@@ -73,9 +73,9 @@ namespace Managers
         public void RandomObjectGenerator()
         {
             // Find ScriptableObjects in the ObjectsManager for accessing objects.
-            var weaponObjects = ResourceManager.Instance.FindScriptableObject(ObjectType.WEAPON);
-            var healthObjects = ResourceManager.Instance.FindScriptableObject(ObjectType.HEALTH);
-            var shieldObjects = ResourceManager.Instance.FindScriptableObject(ObjectType.SHIELD);
+            var weaponObjects = ResourceManager.Instance.FindScriptableObject(ObjectType.Weapon);
+            var healthObjects = ResourceManager.Instance.FindScriptableObject(ObjectType.Health);
+            var shieldObjects = ResourceManager.Instance.FindScriptableObject(ObjectType.Shield);
 
             // Generate random indices for the objects.
             var randomWeaponIndex = Random.Range(0, weaponObjects.Length);
