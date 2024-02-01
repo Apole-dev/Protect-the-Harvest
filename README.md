@@ -1,4 +1,6 @@
-- Assets
+![image](https://github.com/Apole-dev/Protect-the-Harvest/assets/74319360/8b594448-b871-4b30-8cdc-601275545e81)
+
+--------------------------------------
 - Scripts
   - Enums
     - ObjectType.cs
@@ -14,19 +16,4 @@
     - MainMechanics.cs
     - Player.cs
     - ResourceObject.cs
-  - Scenes
-    - MainMenu.unity
-    - General.unity
-  - Prefabs
-    - PlayerPrefab.prefab
-    - EnemyPrefab.prefab
-  - Materials
-    - PlayerMaterial.mat
-    - EnemyMaterial.mat
-  - Textures
-    - BackgroundTexture.png
-    - PlayerTexture.png
-    - EnemyTexture.png
-  - Audio
-  - Animations
-  - UI
+-------------------------------------
