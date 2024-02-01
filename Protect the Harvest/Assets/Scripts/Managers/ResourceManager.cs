@@ -1,21 +1,21 @@
-﻿using Enums;
+﻿using UnityEngine;
 using Singleton;
-using UnityEngine;
+using Enums;
 
 namespace Managers
 {
     public class ResourceManager : MonoSingleton<ResourceManager>
     {
         #region Resource Object Lists
-        private ResourceObject[] _gunResourceObjects;
-        private ResourceObject[] _shieldResourceObjects;
-        private ResourceObject[] _healthResourceObjects;
+            private ResourceObject[] _gunResourceObjects;
+            private ResourceObject[] _shieldResourceObjects;
+            private ResourceObject[] _healthResourceObjects;
         #endregion
         
         #region Resource Object Acsessers
-        public ResourceObject clickWeaponResourceObject;
-        public ResourceObject clickShieldResourceObject;
-        public ResourceObject clickHealthResourceObject;
+            public ResourceObject clickWeaponResourceObject;
+            public ResourceObject clickShieldResourceObject;
+            public ResourceObject clickHealthResourceObject;
         #endregion
 
         private void Awake() => RandomObjectGenerator();
@@ -25,7 +25,7 @@ namespace Managers
         /// </summary>
         /// <param name="objectType"></param>
         /// <returns></returns>
-        public ResourceObject[] FindScriptableObject(ObjectType objectType)
+        private ResourceObject[] FindScriptableObject(ObjectType objectType)
         {
             AssignScriptableObject();
 
@@ -70,7 +70,7 @@ namespace Managers
         /// <summary>
         /// Generates random objects for the UI.
         /// </summary>
-        public void RandomObjectGenerator()
+        private void RandomObjectGenerator()
         {
             // Find ScriptableObjects in the ObjectsManager for accessing objects.
             var weaponObjects = ResourceManager.Instance.FindScriptableObject(ObjectType.Weapon);
