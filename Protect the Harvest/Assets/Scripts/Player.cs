@@ -7,6 +7,7 @@ public class Player : MainMechanics
 {
     private AudioManager _audioManager;
     private UIManager _uiManager;
+    private CombatController _combatController;
     
     [SerializeField] private AnimatorController playerAnimator;
 
@@ -19,8 +20,14 @@ public class Player : MainMechanics
         
         _audioManager = AudioManager.Instance;
         _uiManager = UIManager.Instance;
+        _combatController = FindObjectOfType<CombatController>();
     }
-    
+
+    private void Start()
+    {
+        _combatController.CombatEvent += HandlePlayerWinCombatEvent;
+    }
+
     public override void Attack()
     {
         //TODO: ANIMATION (player animation controller)
@@ -48,17 +55,11 @@ public class Player : MainMechanics
         //TODO: INCREASE HEALTH
     }
 
-    
-    
-    public override void PlayerWin()
+    private void HandlePlayerWinCombatEvent(object sender, CombatEventArgs e)
     {
-        //TODO: ANIMATION (player animation controller win animation)
-        
-        //TODO: OPEN WIN MENU
-        
-        //TODO: UPDATE COINS
-        
-        //MAYBE: UPDATE LEVEL
+        if (e.winner == "Player")
+        {
+            //TODO: PLAYER WIN
+        }
     }
-    
 }

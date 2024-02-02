@@ -1,12 +1,14 @@
-﻿using Abstracts;
+﻿using System;
+using Abstracts;
 using Managers;
 using UnityEditor.Animations;
 using UnityEngine;
 
-public class Enemy : MainMechanics
+public class Enemy : MainMechanics 
 {
     private AudioManager _audioManager;
     private UIManager _uiManager;
+    private CombatController _combatController;
     
     [SerializeField] private AnimatorController enemyAnimator;
 
@@ -19,7 +21,15 @@ public class Enemy : MainMechanics
         
         _audioManager = AudioManager.Instance;
         _uiManager = UIManager.Instance;
+        _combatController = FindObjectOfType<CombatController>();
     }
+
+    private void Start()
+    {
+        _combatController.CombatEvent += HandleEnemyWinCombatEvent;
+    }
+
+
 
     public override void Attack()
     {
@@ -48,8 +58,13 @@ public class Enemy : MainMechanics
         //TODO: INCREASE HEALTH
     }
 
-    public override void EnemyWin()
+    private void HandleEnemyWinCombatEvent(object sender, CombatEventArgs e)
     {
-        throw new System.NotImplementedException();
+        if (e.winner == "Enemy")
+        {
+            //TODO: ENEMY WIN
+        }
     }
+
+
 }

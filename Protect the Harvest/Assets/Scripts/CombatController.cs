@@ -1,38 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using Abstracts;
 
-public class CombatController : MonoBehaviour
+public sealed class CombatController : MonoBehaviour
 {
-    private Player _player;
-    private Enemy _enemy;
+    public event EventHandler<CombatEventArgs> CombatEvent;
 
-    private List<MainMechanics> _observers;
-    
-    private void Awake()
+    private void OnCombatEvent(CombatEventArgs e)
     {
-        _observers = new List<MainMechanics>();
-        _player = GetComponent<Player>();
-        _enemy = GetComponent<Enemy>();
+        CombatEvent?.Invoke(this, e);
     }
 
-    #region Observer Section
-        public void AddObserver(MainMechanics observer)
-        {
-            _observers.Add(observer);
-        }
-
-        public void RemoveObserver(MainMechanics observer)
-        {
-            _observers.Remove(observer);
-        }
-
-        public void Notify()
-        {
-            _observers.ForEach(p => p.PlayerWin());
-            _observers.ForEach(e => e.EnemyWin());
-        }
-    #endregion
+    public void PlayerWinEvent()
+    {
+        OnCombatEvent(new CombatEventArgs("Player"));
+    }
     
-    
+    public void EnemyWinEvent()
+    {
+        OnCombatEvent(new CombatEventArgs("Enemy"));
+    }
 }

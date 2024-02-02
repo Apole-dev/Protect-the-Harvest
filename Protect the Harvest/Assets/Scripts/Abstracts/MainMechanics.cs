@@ -11,10 +11,6 @@ namespace Abstracts
         public abstract void Attack();
         public abstract void Defence();
         public abstract void Heal();
-    
-        //GAME END MECHANICS
-        public virtual void EnemyWin(){}
-        public virtual void PlayerWin(){}
         
     
         /// <summary>
@@ -24,6 +20,7 @@ namespace Abstracts
         {
             enemyHealthBar.value = enemyHealthBar.maxValue;
         } 
+
     
     }
 }

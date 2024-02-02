@@ -1,5 +1,4 @@
 ﻿using Singleton;
-using UnityEngine;
 
 namespace Managers
 {
@@ -41,5 +40,6 @@ namespace Managers
         }
         
         public void ShowAdvertisement(){}
+        
     }
 }

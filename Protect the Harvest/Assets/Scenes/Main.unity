@@ -537,7 +537,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.7264151, g: 0.56719214, b: 0.13294762, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -547,7 +547,7 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0.5
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
@@ -1324,8 +1324,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 963194228}
+  - {fileID: 897077542}
   - {fileID: 705507995}
   - {fileID: 177810410}
   - {fileID: 1173777360}
   - {fileID: 536816940}
-  - {fileID: 897077542}
