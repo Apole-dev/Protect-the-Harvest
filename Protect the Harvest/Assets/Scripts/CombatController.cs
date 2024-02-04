@@ -1,7 +1,7 @@
 ﻿using System;
-using UnityEngine;
+using Singleton;
 
-public sealed class CombatController : MonoBehaviour
+public sealed class CombatController : MonoSingleton<CombatController>
 {
     public event EventHandler<CombatEventArgs> CombatEvent;
 
@@ -18,5 +18,6 @@ public sealed class CombatController : MonoBehaviour
     public void EnemyWinEvent()
     {
         OnCombatEvent(new CombatEventArgs("Enemy"));
+        
     }
 }

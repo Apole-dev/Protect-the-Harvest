@@ -1,4 +1,5 @@
 ﻿using Abstracts;
+using Enums;
 using Managers;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -7,7 +8,6 @@ public class Player : MainMechanics
 {
     private AudioManager _audioManager;
     private UIManager _uiManager;
-    private CombatController _combatController;
     
     [SerializeField] private AnimatorController playerAnimator;
 
@@ -20,12 +20,14 @@ public class Player : MainMechanics
         
         _audioManager = AudioManager.Instance;
         _uiManager = UIManager.Instance;
-        _combatController = FindObjectOfType<CombatController>();
+        
+        
     }
 
     private void Start()
     {
-        _combatController.CombatEvent += HandlePlayerWinCombatEvent;
+        CombatController.Instance.CombatEvent += HandleCombatEvent;
+        
     }
 
     public override void Attack()
@@ -35,6 +37,7 @@ public class Player : MainMechanics
         //TODO: SHOOT EFFECT & SOUND (AudioManager)
         
         //TODO: REDUCE HEALTH OF ENEMY
+        enemyHealthBar.value -= ResourceManager.Instance.clickWeaponResourceObject.effectValue;
     }
 
     public override void Defence()
@@ -55,11 +58,15 @@ public class Player : MainMechanics
         //TODO: INCREASE HEALTH
     }
 
-    private void HandlePlayerWinCombatEvent(object sender, CombatEventArgs e)
+    private void HandleCombatEvent(object sender, CombatEventArgs e)
     {
+      
         if (e.winner == "Player")
         {
             //TODO: PLAYER WIN
+            print("Player win");
+            _uiManager.UpdateScore(5);
+            _audioManager.PlaySound(SoundType.PlayerWinSound);
         }
     }
 }

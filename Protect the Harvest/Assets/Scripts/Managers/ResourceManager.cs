@@ -87,5 +87,10 @@ namespace Managers
             clickHealthResourceObject = healthObjects[randomHealthIndex];
             clickShieldResourceObject = shieldObjects[randomShieldIndex];
         }
+
+        public bool ResourceObjectExists()
+        {
+            return !clickShieldResourceObject && !clickWeaponResourceObject && clickHealthResourceObject != null;
+        }
     }
 }

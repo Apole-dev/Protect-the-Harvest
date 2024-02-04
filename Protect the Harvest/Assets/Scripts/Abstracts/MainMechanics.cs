@@ -5,7 +5,7 @@ namespace Abstracts
 {
     public abstract class MainMechanics : MonoBehaviour
     {
-        [SerializeField] private Slider enemyHealthBar;
+        [SerializeField] protected Slider enemyHealthBar;
     
         //GAME MAIN MECHANICS
         public abstract void Attack();

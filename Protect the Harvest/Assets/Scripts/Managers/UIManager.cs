@@ -4,6 +4,12 @@ namespace Managers
 {
     public class UIManager : MonoSingleton<UIManager>
     {
+        private void Awake()
+        {
+            CombatController.Instance.CombatEvent += HandleCombatEvent;
+        }
+
+
         public void ShowMessage(string message)
         {
             
@@ -38,8 +44,24 @@ namespace Managers
         {
            
         }
-        
-        public void ShowAdvertisement(){}
-        
+
+        public void ShowAdvertisement()
+        {
+            
+        }
+
+
+        private void HandleCombatEvent(object sender, CombatEventArgs e)
+        {
+            switch (e.winner)
+            {
+                case "Player":
+                    //TODO: PLAYER WIN
+                    break;
+                case "Enemy":
+                    //TODO: ENEMY WIN
+                    break;
+            }
+        }
     }
 }

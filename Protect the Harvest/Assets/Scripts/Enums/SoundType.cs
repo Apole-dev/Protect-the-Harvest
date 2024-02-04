@@ -24,8 +24,10 @@
         #endregion
         
         #region General
-            WinSound,
-            LoseSound,
+            PlayerWinSound,
+            PlayerLoseSound,
+            EnemyWinSound,
+            EnemyLoseSound,
         #endregion
     }
 }

@@ -15,17 +15,13 @@ public class ResourceObject :ScriptableObject
 
     [Tooltip("Positive Effect value of object")] 
     [Range(1f,25f)]
-    public float positiveEffectValue;
-
-    [Tooltip("Negative Effect value of object")] 
-    [Range(1f,25f)]
-    public float negativeEffectValue;
+    public float effectValue;
 
     [Tooltip("3D Game object ")]
     public GameObject gameObject;
         
     [Tooltip("Image for show from UI")]
-    public Texture2D gameObjectImage;
+    public Sprite gameObjectImage;
     
     [Tooltip("Sound Effect of object")] 
     public AudioClip soundEffect;
