@@ -1,13 +1,16 @@
-﻿using Abstracts;
-using Enums;
-using Managers;
+﻿using System;
 using UnityEditor.Animations;
 using UnityEngine;
+using Interfaces;
+using Abstracts;
+using Managers;
+using Enums;
 
-public class Player : MainMechanics 
+public class Player : MainMechanics , ICombatState
 {
     private AudioManager _audioManager;
     private UIManager _uiManager;
+    private Enemy _enemy;
     
     [SerializeField] private AnimatorController playerAnimator;
 
@@ -20,8 +23,9 @@ public class Player : MainMechanics
         
         _audioManager = AudioManager.Instance;
         _uiManager = UIManager.Instance;
-        
-        
+        _enemy = FindObjectOfType<Enemy>();
+
+
     }
 
     private void Start()
@@ -29,6 +33,21 @@ public class Player : MainMechanics
         CombatController.Instance.CombatEvent += HandleCombatEvent;
         
     }
+
+    private void Update()
+    {
+        if (Input.touchCount > 0)
+        {
+            if (TouchPhase.Began == Input.GetTouch(0).phase)
+            {
+               InstantiateEffect();
+            }
+        }
+    }
+
+    public override float currentDamage { get; set; }
+    public override float currentHealth { get; set; }
+    public override float currentDefence { get; set; }
 
     public override void Attack()
     {
@@ -47,6 +66,7 @@ public class Player : MainMechanics
         //TODO: DEFENCE EFFECT & SOUND // (AudioManager) 
         
         //TODO: REDUCE DAMAGE OF ENEMY ATTACK
+        
     }
 
     public override void Heal()
@@ -68,5 +88,17 @@ public class Player : MainMechanics
             _uiManager.UpdateScore(5);
             _audioManager.PlaySound(SoundType.PlayerWinSound);
         }
+    }
+
+    public void Handle(CombatController combatController)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void InstantiateEffect()
+    {
+        base.InstantiateEffect();
+        print("instantiate effect");
+        //TODO CUSTOM EFFECT HERE
     }
 }

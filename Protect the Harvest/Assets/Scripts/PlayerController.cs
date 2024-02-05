@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,8 +15,9 @@ public class PlayerController : MonoBehaviour
         {
             var touch = Input.GetTouch(0);
             var horizontalMove = touch.deltaPosition.x;
+            var verticalMove = touch.deltaPosition.y;
             print("horizontalMove: " + horizontalMove);
-            var movement = new Vector3(horizontalMove, 0f, 0f) * (moveSpeed * Time.deltaTime);
+            var movement = new Vector3(horizontalMove, 0f, verticalMove) * (moveSpeed * Time.deltaTime);
 
             transform.Translate(movement);
         }

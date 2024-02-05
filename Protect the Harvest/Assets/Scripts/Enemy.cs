@@ -1,4 +1,5 @@
-﻿using Abstracts;
+﻿using System;
+using Abstracts;
 using Managers;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class Enemy : MainMechanics
 {
     private AudioManager _audioManager;
     private UIManager _uiManager;
+    private Player _player;
     
     
     [SerializeField] private AnimatorController enemyAnimator;
@@ -14,21 +16,27 @@ public class Enemy : MainMechanics
     private void Awake()
     {
         if (enemyAnimator == null)
-        {
             Debug.LogError("No Animator Controller set on " + gameObject.name);
-        }
+        
         
         _audioManager = AudioManager.Instance;
         _uiManager = UIManager.Instance;
-        
+        _player = FindObjectOfType<Player>();
+
     }
 
     private void Start()
     {
+        currentHealth = enemyHealthBar.value;
         CombatController.Instance.CombatEvent += HandleCombatEvent;
     }
 
 
+
+
+    public override float currentDamage { get; set; } 
+    public override float currentHealth { get; set; }
+    public override float currentDefence { get; set; }
 
     public override void Attack()
     {
@@ -73,4 +81,11 @@ public class Enemy : MainMechanics
     }
 
 
+    public override void InstantiateEffect()
+    {
+        base.InstantiateEffect();
+        print("Instantiate Effect");
+        
+        //TODO CUSTOM EFFECT HERE
+    }
 }

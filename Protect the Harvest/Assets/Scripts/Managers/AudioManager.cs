@@ -29,7 +29,8 @@ namespace Managers
             _audioSource = GetComponent<AudioSource>();
            CombatController.Instance.CombatEvent += HandleCombatEvent;
         }
-
+        
+        
         public void PlaySound(SoundType soundType)
         {
             switch (soundType)
