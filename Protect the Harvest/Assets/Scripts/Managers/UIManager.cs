@@ -4,6 +4,14 @@ namespace Managers
 {
     public class UIManager : MonoSingleton<UIManager>
     {
+        public bool cardSelectionScreen = false;
+        public bool combatScreen = false;
+        public bool gameOverScreen = false;
+        public bool victoryScreen = false;
+        public bool pauseMenu = false;
+        public bool loadingScreen = false;
+        public bool advertisement = false;
+        
         private void Awake()
         {
             CombatController.Instance.CombatEvent += HandleCombatEvent;

@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d028a43a6315472197b35ac2d29cee22, type: 3}
   m_Name: Shield (T1)
   m_EditorClassIdentifier: 
-  objectType: 0
+  objectType: 1
+  rarity: 3
   name: Shield Test 1
   explanationOfObject: Shield Test Object
-  positiveEffectValue: 0
-  negativeEffectValue: 0
+  effectValue: 6.9
   gameObject: {fileID: 0}
-  gameObjectImage: {fileID: 0}
+  gameObjectImage: {fileID: 21300000, guid: 13ee44c04a9a5c043a1b4969a7d2d42b, type: 3}
   soundEffect: {fileID: 0}

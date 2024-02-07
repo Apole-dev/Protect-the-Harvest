@@ -70,7 +70,7 @@ namespace Managers
         /// <summary>
         /// Generates random objects for the UI.
         /// </summary>
-        private void RandomObjectGenerator()
+        public void RandomObjectGenerator()
         {
             // Find ScriptableObjects in the ObjectsManager for accessing objects.
             var weaponObjects = ResourceManager.Instance.FindScriptableObject(ObjectType.Weapon);

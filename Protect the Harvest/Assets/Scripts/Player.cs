@@ -11,6 +11,7 @@ public class Player : MainMechanics , ICombatState
     private AudioManager _audioManager;
     private UIManager _uiManager;
     private Enemy _enemy;
+    private Inventory _inventory;
     
     [SerializeField] private AnimatorController playerAnimator;
 
@@ -24,6 +25,8 @@ public class Player : MainMechanics , ICombatState
         _audioManager = AudioManager.Instance;
         _uiManager = UIManager.Instance;
         _enemy = FindObjectOfType<Enemy>();
+        _inventory = FindObjectOfType<Inventory>();
+        
 
 
     }
@@ -40,7 +43,8 @@ public class Player : MainMechanics , ICombatState
         {
             if (TouchPhase.Began == Input.GetTouch(0).phase)
             {
-               InstantiateEffect();
+               //InstantiateEffect();
+               Attack();
             }
         }
     }
@@ -56,7 +60,10 @@ public class Player : MainMechanics , ICombatState
         //TODO: SHOOT EFFECT & SOUND (AudioManager)
         
         //TODO: REDUCE HEALTH OF ENEMY
-        enemyHealthBar.value -= ResourceManager.Instance.clickWeaponResourceObject.effectValue;
+        var damageToDeal = _inventory.currentDamage;
+        enemyHealthBar.value += damageToDeal;
+        print(damageToDeal);
+
     }
 
     public override void Defence()

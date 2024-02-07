@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d028a43a6315472197b35ac2d29cee22, type: 3}
-  m_Name: Weapon (T1)
+  m_Name: Health (T1) 2
   m_EditorClassIdentifier: 
-  objectType: 0
-  rarity: 0
-  name: Weapon Test 1
-  explanationOfObject: Test weapon object
-  effectValue: 3.1
+  objectType: 2
+  rarity: 4
+  name: Health Test 1
+  explanationOfObject: Health Test Object 1
+  effectValue: 4.4
   gameObject: {fileID: 0}
-  gameObjectImage: {fileID: 21300000, guid: bdff19285bbdd094386feeda402ac9c4, type: 3}
+  gameObjectImage: {fileID: 21300000, guid: a76e4bd1251ae134e80021b66182ee74, type: 3}
   soundEffect: {fileID: 0}

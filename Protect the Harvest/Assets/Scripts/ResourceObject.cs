@@ -7,6 +7,9 @@ public class ResourceObject :ScriptableObject
     [Tooltip("Indicates to object type"),]
     public ObjectType objectType;
 
+    [Tooltip("Indicates to object rarity")]
+    public Rarity rarity;
+
     [Tooltip("Name of Game object")] 
     public new string name ;
 
