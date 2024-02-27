@@ -1,7 +1,9 @@
-﻿namespace Interfaces
+﻿using Enums;
+
+namespace Interfaces
 {
     public interface ICombatState
     {
-        public void Handle(CombatController combatController);
+        public void ActivateState(CombatTurn combatTurn);
     }
 }

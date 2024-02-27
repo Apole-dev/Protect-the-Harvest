@@ -1,56 +1,79 @@
-﻿using System;
-using Enums;
-using Managers;
-using Singleton;
+﻿using System.Collections;
+using System.Globalization;
+using Enemy_Scripts;
+using Player_Scripts;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-
-
-public sealed class CombatController : MonoSingleton<CombatController>
+public class CombatController : MonoBehaviour
 {
-    public event EventHandler<CombatEventArgs> CombatEvent;
+    private EnemyAttack _enemyAttack;
     
-    private Context _context;
     
+    [SerializeField] private TMP_Text stageNumberText;
+    private int _stage = 0;
+    private int _tempStage;
+    
+    [SerializeField] private Image enemyImage;
+    [SerializeField] private Sprite enemyTypeSprite;
+    [SerializeField] private TMP_Text enemyType;
+
+    [SerializeField] private Image attackImage;
+    [SerializeField] private Sprite attackTypeSprite;
+    [SerializeField] private TMP_Text attackDamage;
+
+    [SerializeField] private Image speedImage;
+    [SerializeField] private Sprite speedTypeSprite;
+    [SerializeField] private TMP_Text speedValue;
+
 
     private void Awake()
     {
-        _context = new Context(this);
+        _enemyAttack = GetComponent<EnemyAttack>();
+        _stage = 1; // default stage
     }
 
-    private void Update()
+    public void StageChangeTesting()
     {
-        //Test InstantiateEffect();
-        if (Input.touchCount > 0)
-        {
-            if (TouchPhase.Began == Input.GetTouch(0).phase)
-            {
-              
-            }
-        }
+        _stage += 1;
+        PlayerAttack.stagePassed = true;
+        StageAlgorithm();
+        StartCoroutine(ResetValue());
     }
 
-    #region Observer
-
-    
-
-    private void OnCombatEvent(CombatEventArgs e)
+    private IEnumerator ResetValue()
     {
-        CombatEvent?.Invoke(this, e);
+        yield return new WaitForSeconds(0.3f);
+        PlayerAttack.stagePassed = false;
     }
 
-    public void PlayerWinEvent()
+    private void StageAlgorithm()
     {
-        OnCombatEvent(new CombatEventArgs("Player"));
+        _tempStage = _stage;
         
-    }
-    
-    public void EnemyWinEvent()
-    {
-        OnCombatEvent(new CombatEventArgs("Enemy"));
-    }
-    #endregion 
+        // If stage is passed, increase stage
+        if (PlayerAttack.stagePassed) _stage += 1;
+        
+        if (_tempStage < _stage)
+        {
+            EnemyGenerator.enemiesLimitNum += 1;
+            print(EnemyGenerator.enemiesLimitNum);
+            AssignDetails();
+        }
 
-    
-    
+    }
+
+    private void AssignDetails()
+    {
+        enemyImage.sprite = enemyTypeSprite;
+        attackImage.sprite = attackTypeSprite;
+        speedImage.sprite = speedTypeSprite;
+        
+        
+        stageNumberText.text = _stage.ToString();
+        enemyType.text = EnemyAttack.enemyType.ToString(CultureInfo.InvariantCulture);
+        attackDamage.text = EnemyAttack.enemyDamage.ToString(CultureInfo.InvariantCulture);
+        speedValue.text = EnemyMovement.enemySpeed.ToString(CultureInfo.InvariantCulture);
+    }
 }

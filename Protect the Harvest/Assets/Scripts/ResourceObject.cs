@@ -9,15 +9,12 @@ public class ResourceObject :ScriptableObject
 
     [Tooltip("Indicates to object rarity")]
     public Rarity rarity;
-
-    [Tooltip("Name of Game object")] 
-    public new string name ;
-
-    [Tooltip("Detail explanation of object")] [TextArea(2,5)]
-    public string explanationOfObject;
-
+    
+    [Tooltip("Indicates type of Gun")]
+    public GunType gunType;
+    
     [Tooltip("Positive Effect value of object")] 
-    [Range(1f,25f)]
+    [Range(0.01f,1f)]
     public float effectValue;
 
     [Tooltip("3D Game object ")]

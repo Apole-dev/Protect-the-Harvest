@@ -24,8 +24,19 @@ MonoBehaviour:
         - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-82404566-0
         - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-924913598-0
         - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-177810409-0
-        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-536816939-0
-        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1173777359-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-111766735-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-723262855-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1173966271-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1745388247-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-63068202-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-795900201-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1831270951-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-2001154418-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1306315661-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1592114036-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1976473315-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1554257244-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1496604252-0
         values:
         - iColor: 0
           icon: MeshCollider Icon
@@ -37,12 +48,34 @@ MonoBehaviour:
           icon: MeshCollider Icon
         - iColor: 0
           icon: MeshCollider Icon
-        - iColor: 1
+        - iColor: 9
           icon: 
-        - iColor: 2
+        - iColor: 8
           icon: 
+        - iColor: 6
+          icon: 
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
       goDatasByInstanceId:
-        keys: ca6c0000e06c0000b26c0000f66c0000bc6c0000d46c00000a6d0000
+        keys: 266d0000766d0000c46c0000946d0000f46c0000d86c0000706d0000f46d0000262dfaff2c2dfaff2a2dfaff282dfaff242dfaff183ef9ff203ef9ff1e3ef9ff1c3ef9ff1a3ef9ff
         values:
         - iColor: 0
           icon: MeshCollider Icon
@@ -54,10 +87,32 @@ MonoBehaviour:
           icon: MeshCollider Icon
         - iColor: 0
           icon: MeshCollider Icon
-        - iColor: 1
+        - iColor: 9
           icon: 
-        - iColor: 2
+        - iColor: 8
           icon: 
+        - iColor: 6
+          icon: 
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
+        - iColor: 0
+          icon: MeshCollider Icon
     - goDatasByGlobalId:
         keys: []
         values: []

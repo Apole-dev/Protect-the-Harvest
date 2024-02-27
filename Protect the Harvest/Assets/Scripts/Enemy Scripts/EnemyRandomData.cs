@@ -1,0 +1,71 @@
+﻿using System;
+using Singleton;
+using UnityEngine;
+using Random = UnityEngine.Random;
+
+namespace Enemy_Scripts
+{
+    public class EnemyRandomData : MonoSingleton<EnemyRandomData>
+    {
+        [SerializeField] EnemyData enemyData;
+        
+        [Header("Health Stats")]
+        private float _maxHealth;
+        private float _minHealth;
+        [Space]
+        
+        [Header("Attack Stats")]
+        private float _maxDamage;
+        private float _minDamage;
+        [Space]
+        
+        [Header("Movement Stats")]
+        private float _maxSpeed;
+        private float _minSpeed;
+        [Space]
+        
+        [Header("Fire Stats")]
+        private float _maxFireRate;
+        private float _minFireRate;
+
+        private void Awake()
+        {
+            AssignData();
+        }
+
+        private void AssignData()
+        {
+            _maxHealth =enemyData.maxHealth;
+            _minHealth =enemyData.minHealth;
+            
+            _maxDamage =enemyData.maxDamage;
+            _minDamage =enemyData.minDamage;
+            
+            _maxSpeed =enemyData.maxSpeed;
+            _minSpeed =enemyData.minSpeed;
+            
+            _maxFireRate =enemyData.maxFireRate;
+            _minFireRate =enemyData.minFireRate;
+        }
+
+        public float GetRandomHealth()
+        {
+            return Random.Range(_minHealth, _maxHealth);
+        }
+
+        public float GetRandomDamage()
+        { 
+            return Random.Range(_minDamage, _maxDamage);
+        }
+
+        public float GetRandomSpeed()
+        {
+            return Random.Range(_minSpeed, _maxSpeed);
+        }
+
+        public float GetRandomFireRate()
+        {
+            return Random.Range(_minFireRate, _maxFireRate);
+        }
+    }
+}

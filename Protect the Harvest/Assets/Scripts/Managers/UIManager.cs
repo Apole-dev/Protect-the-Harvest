@@ -4,6 +4,9 @@ namespace Managers
 {
     public class UIManager : MonoSingleton<UIManager>
     {
+        
+        
+            
         public bool cardSelectionScreen = false;
         public bool combatScreen = false;
         public bool gameOverScreen = false;
@@ -12,10 +15,6 @@ namespace Managers
         public bool loadingScreen = false;
         public bool advertisement = false;
         
-        private void Awake()
-        {
-            CombatController.Instance.CombatEvent += HandleCombatEvent;
-        }
 
 
         public void ShowMessage(string message)
@@ -59,17 +58,6 @@ namespace Managers
         }
 
 
-        private void HandleCombatEvent(object sender, CombatEventArgs e)
-        {
-            switch (e.winner)
-            {
-                case "Player":
-                    //TODO: PLAYER WIN
-                    break;
-                case "Enemy":
-                    //TODO: ENEMY WIN
-                    break;
-            }
-        }
+       
     }
 }
