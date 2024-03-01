@@ -1,38 +1,56 @@
-using System;
+using System.Collections;
+using Enums;
+using Interfaces;
 using Player_Scripts;
 using UnityEngine;
 
 namespace Enemy_Scripts
 {
-    public class EnemyAttack : MonoBehaviour
+    public class EnemyAttack : MonoBehaviour 
     {
-        public static float enemyDamage;
-        public static string enemyType = "Normal";
+        public bool enemyAttackDecided = false;
+        public float enemyDamage;
+        public string enemyType = EnemyType.Wizard.ToString();
 
         
-        [SerializeField] private ParticleSystem attackEffect;
+        [SerializeField] private ParticleSystem enemyAttackEffect;
+        [SerializeField] private GameObject enemyAttackCenter;
+        
+        
         private PlayerHeal _playerHeal;
 
+        
         private void Awake()
         {
+            enemyAttackEffect.transform.position = enemyAttackCenter.transform.position.AddHeight(0.5f);
+            enemyDamage = EnemyRandomData.Instance.GetRandomDamage();
             _playerHeal = FindObjectOfType<PlayerHeal>();
         }
 
-        public void Attack()
+
+        private void Attack()
         {
-            //REFACTOR HERE
-            enemyDamage = EnemyRandomData.Instance.GetRandomDamage();
-            print("Enemy Attack Damage: " + enemyDamage);
-            
-            attackEffect.Play();
-            
             if(ParticleCollisionDetector.isEnemyAttackHit) 
             {
-                //BUG need more fix if character on the particle then it get hit WHEN GET INSIDE AUTOMATICALLY SHOULD IT
+                print("Player did hit the circle");
                 _playerHeal.ReduceHealth(enemyDamage);
             }
+            
         }
-        
-        
+
+        public void AssignValueOfAttack()
+        {
+            StartCoroutine(WaitParticle());
+        }
+
+        private IEnumerator WaitParticle()
+        {
+            var attackRate = EnemyRandomData.Instance.GetRandomFireRate();
+            enemyAttackDecided = true;
+            yield return new WaitForSeconds(attackRate);
+            enemyAttackEffect.Play();
+            enemyAttackDecided = false;
+            
+        }
     }
 }

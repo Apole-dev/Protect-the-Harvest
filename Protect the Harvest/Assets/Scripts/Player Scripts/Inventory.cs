@@ -25,17 +25,17 @@ namespace Player_Scripts
         [SerializeField] private TMP_Text gunRarityText;
         [SerializeField] private TMP_Text shieldRarityText;
         [SerializeField] private TMP_Text healthRarityText;
-        
+            
+        [SerializeField] private bool isCardSelection;
 
         [Header("Attributes")]
+        public int chosenCard;
         public float chosenDamage;
         public float chosenHealth;
         public float chosenShield;
         public GunType gunType;
 
         
-        [Header("Card Selection")]
-        [SerializeField] private GameObject cardSelectionScreen;
 
         #endregion
 
@@ -67,20 +67,12 @@ namespace Player_Scripts
             if (gunRarityText == null || shieldRarityText == null || healthRarityText == null) return;
             if (gunButton == null || shieldButton == null || healthButton == null) return;
 
-            cardSelectionScreen.SetActive(false);
+            UIManager.Instance.ShowCardSelectionScreen(false);
         }
 
         private void UpdateCardSelectionScreen()
         {
-            if (UIManager.Instance.cardSelectionScreen)
-            {
-                cardSelectionScreen.SetActive(true);
-                AssignPrimaryAttributes();
-            }
-            else
-            {
-                cardSelectionScreen.SetActive(false);
-            }
+            UIManager.Instance.ShowCardSelectionScreen(isCardSelection);
         }
 
         private void AssignPrimaryAttributes()
@@ -102,21 +94,21 @@ namespace Player_Scripts
         {
             chosenDamage = ResourceManager.Instance.clickWeaponResourceObject.effectValue;
             gunType = ResourceManager.Instance.clickWeaponResourceObject.gunType;
-            UIManager.Instance.cardSelectionScreen = false;
+            isCardSelection = false;
             ResourceManager.Instance.RandomObjectGenerator();
         }
 
         public void ShieldClick()
         {
             chosenShield = ResourceManager.Instance.clickShieldResourceObject.effectValue;
-            UIManager.Instance.cardSelectionScreen = false;
+            isCardSelection = false;
             ResourceManager.Instance.RandomObjectGenerator();
         }
 
         public void HealthClick()
         {
             chosenHealth = ResourceManager.Instance.clickHealthResourceObject.effectValue;
-            UIManager.Instance.cardSelectionScreen = false;
+            isCardSelection = false;
             ResourceManager.Instance.RandomObjectGenerator();
         }
 

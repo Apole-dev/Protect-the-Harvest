@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Globalization;
 using Enemy_Scripts;
-using Player_Scripts;
+using Managers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CombatController : MonoBehaviour
+public class StageCombatController : MonoBehaviour
 {
+    private EnemyHealth _enemyHealth;
+    private EnemyMovement _enemyMovement;
     private EnemyAttack _enemyAttack;
     
     
@@ -27,41 +29,42 @@ public class CombatController : MonoBehaviour
     [SerializeField] private Sprite speedTypeSprite;
     [SerializeField] private TMP_Text speedValue;
 
-
+    public bool isStagePassed = false;
     private void Awake()
     {
-        _enemyAttack = GetComponent<EnemyAttack>();
+        _enemyAttack = FindObjectOfType<EnemyAttack>();
+        _enemyHealth = FindObjectOfType<EnemyHealth>();
+        _enemyMovement = FindObjectOfType<EnemyMovement>();
         _stage = 1; // default stage
     }
 
-    public void StageChangeTesting()
-    {
-        _stage += 1;
-        PlayerAttack.stagePassed = true;
-        StageAlgorithm();
-        StartCoroutine(ResetValue());
-    }
 
-    private IEnumerator ResetValue()
+    private void Update()
     {
-        yield return new WaitForSeconds(0.3f);
-        PlayerAttack.stagePassed = false;
+        StageAlgorithm();
     }
 
     private void StageAlgorithm()
     {
-        _tempStage = _stage;
-        
-        // If stage is passed, increase stage
-        if (PlayerAttack.stagePassed) _stage += 1;
-        
-        if (_tempStage < _stage)
+        //Todo> STAGE PASSED AREA
+        if (Enemy.killedEnemies - EnemyGenerator.enemiesLimitNum == 0)
         {
+            isStagePassed = true;
+            print("stage passed");
+            _stage += 1;
+            Enemy.killedEnemies = 0;
             EnemyGenerator.enemiesLimitNum += 1;
-            print(EnemyGenerator.enemiesLimitNum);
+            
+            StartCoroutine(ShowStageScreen());
             AssignDetails();
         }
-
+    }
+    
+    private IEnumerator ShowStageScreen()
+    {
+        UIManager.Instance.ShowVictoryScreen(true);
+        yield return new WaitForSeconds(3f);
+        UIManager.Instance.ShowVictoryScreen(false);
     }
 
     private void AssignDetails()
@@ -70,10 +73,9 @@ public class CombatController : MonoBehaviour
         attackImage.sprite = attackTypeSprite;
         speedImage.sprite = speedTypeSprite;
         
-        
         stageNumberText.text = _stage.ToString();
-        enemyType.text = EnemyAttack.enemyType.ToString(CultureInfo.InvariantCulture);
-        attackDamage.text = EnemyAttack.enemyDamage.ToString(CultureInfo.InvariantCulture);
-        speedValue.text = EnemyMovement.enemySpeed.ToString(CultureInfo.InvariantCulture);
+        enemyType.text = _enemyAttack.enemyType;
+        attackDamage.text = _enemyAttack.enemyDamage.ToString(CultureInfo.InvariantCulture);
+        //speedValue.text = _enemyMovement.randomEnemySpeed.ToString(CultureInfo.InvariantCulture);
     }
 }

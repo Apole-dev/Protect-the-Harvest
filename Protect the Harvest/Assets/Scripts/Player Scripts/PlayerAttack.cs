@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
 using Enemy_Scripts;
 using Enums;
+using Interfaces;
+using Singleton;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 namespace Player_Scripts
 {
-    public class PlayerAttack : MonoBehaviour
+    public class PlayerAttack : MonoSingleton<PlayerAttack>
     {
         #region General Acsessers
 
@@ -18,8 +22,9 @@ namespace Player_Scripts
         
         #region Scripts Accessers
         [Header("Scripts Accessors")]
-        private EnemyHealth _enemyHealth;
         [SerializeField] private Inventory playerInventory;
+        
+        private IEnemy _enemy;
         #endregion
         
         #region Line Renderer Settings
@@ -40,6 +45,7 @@ namespace Player_Scripts
         
         [Header("Player Attributes")]
         [SerializeField] private Animator animator;
+
         private GameObject _enemyGameObject;
         private float _attackDamage;
         #endregion
@@ -50,30 +56,51 @@ namespace Player_Scripts
         [Header("Shoot Effect")]
         [SerializeField] private ParticleSystem shootEffect;
         private bool _isHit;
+        private bool _shootEffectPlaying = false;
+        private bool _attackActive = false;
         #endregion
         
         private void Update()
         {
             if (ButtonPressController.isPressed && _enemyGameObject != null)
             {
-                Attack();
+                StartCoroutine(AttackInRate());
+            }
+
+            if (ButtonPressController.isPressed)
+            {
+                StartCoroutine(PlayShootEffect());
             }
         }
 
         private void Attack()
         {
-            StartCoroutine(PlayShootEffect());
-
             if (_isHit)
-            {
-                _enemyHealth.ReduceHealth(_attackDamage);
-            }
+                _enemyGameObject.GetComponent<IEnemy>().ReduceHealth(playerDamage: _attackDamage);
         }
         
         private IEnumerator PlayShootEffect() //Shoot effect playing 1 more time. FIXME need to be fixed
         {
+            // if (!_shootEffectPlaying)
+            // {
+            //     _shootEffectPlaying = true;
+            //     yield return new WaitForSeconds(0.5f);
+            //     shootEffect.Play();
+            //     _shootEffectPlaying = false;
+            // }
             yield return new WaitForSeconds(0.5f);
             shootEffect.Play();
+        }
+        
+        private IEnumerator AttackInRate()
+        {
+            if (!_attackActive)
+            {
+                _attackActive = true;
+                yield return new WaitForSeconds(0.5F);
+                Attack();
+                _attackActive = false;
+            }
         }
 
 
@@ -106,8 +133,10 @@ namespace Player_Scripts
             
             if (Physics.Raycast(origin, transformDirection, out var hit, gunShootDistance, enemyMask))
             {
+                //Assign the enemy game object
                 _enemyGameObject = hit.collider.gameObject;
-                _enemyHealth = _enemyGameObject.transform.GetComponentInChildren<EnemyHealth>();
+                
+                //Assign the color when it hit
                 lineRenderer.material.color = Color.green;
 
                 //Check if the hit object is an enemy
@@ -132,10 +161,12 @@ namespace Player_Scripts
                 
                 _isHit = false;
             }
+
             
 
             #endregion
         }
+        
         
 
         /// <summary>

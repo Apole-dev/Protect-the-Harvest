@@ -1,44 +1,50 @@
-﻿using UnityEngine;
+﻿using System;
+using Interfaces;
+using UnityEngine;
 
 namespace Enemy_Scripts
 {
     public class EnemyMovement : MonoBehaviour
     {
-        public static float enemySpeed; 
         
         [SerializeField] private GameObject playerGameObject;
         [SerializeField] private float turnSpeed = 100f;
-        private GameObject _enemyGameObject;
-        private Rigidbody _enemyRb;
+
+        // ReSharper disable once InconsistentNaming
+        private EnemyGenerator enemyGenerator;
+
+        private void Awake() => enemyGenerator = EnemyGenerator.Instance;
+
+        private void FixedUpdate() => AllEnemiesMove();
         
-        private void Awake()
+        
+        private void AllEnemiesMove()
         {
-            _enemyGameObject = transform.parent.gameObject;
-            enemySpeed = EnemyRandomData.Instance.GetRandomSpeed();
+            try
+            {
+                for (int i = 0; i < EnemyProperties.enemiesCount; i++)
+                {
+                    MoveEnemy(enemyGenerator.enemyPropertiesList[i]);
+                    EnemyRotate(enemyGenerator.enemyPropertiesList[i]);
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
             
-            _enemyRb = _enemyGameObject.GetComponent<Rigidbody>();
         }
-
-        private void FixedUpdate()
+        
+        private void MoveEnemy(EnemyProperties enemyProperties)
         {
-            if (_enemyRb.CompareTag("Spawn Manger Object"))
-                return;
-            
-            
-            EnemyMove();
-            EnemyRotate();
+            var direction = (playerGameObject.transform.position - enemyProperties.enemyPrefab.transform.position);
+            enemyProperties.enemyPrefabRigidBody.velocity = direction.normalized * (Time.fixedDeltaTime * enemyProperties.moveSpeed * 50f);
         }
-
-        private void EnemyMove()
-        {
-            var direction = (playerGameObject.transform.position - _enemyGameObject.transform.position).normalized*15f;
-            _enemyRb.velocity = direction *(enemySpeed * Time.fixedDeltaTime);
-        }
-
-        private void EnemyRotate()
+        
+        private void EnemyRotate(EnemyProperties enemyProperties)
         {
             var playerPosition = -playerGameObject.transform.position;
-            _enemyGameObject.transform.LookAt(playerPosition*turnSpeed);
+            enemyProperties.enemyPrefab.transform.LookAt(playerPosition*turnSpeed);
         }
     }
 }

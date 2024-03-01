@@ -16,9 +16,7 @@ MonoBehaviour:
   minHealth: 35
   maxDamage: 5
   minDamage: 15
-  maxSpeed: 3
-  minSpeed: 8
+  maxSpeed: 10.1
+  minSpeed: 15.8
   maxFireRate: 1
   minFireRate: 3
-  maxFireRadius: 1
-  minFireRadius: 2

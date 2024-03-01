@@ -12,15 +12,8 @@ namespace Enemy_Scripts
         {
             print("OnParticleTrigger");
             isEnemyAttackHit = true;
-            print(isEnemyAttackHit);
-            StartCoroutine(Pass());
-            print("after"+isEnemyAttackHit);
         }
 
-        private IEnumerator Pass()
-        {
-            yield return new WaitForSeconds(3f);
-            isEnemyAttackHit = false;
-        }
+
     }
 }
