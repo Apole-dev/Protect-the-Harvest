@@ -45,7 +45,7 @@ namespace Enemy_Scripts
 
         private IEnumerator WaitParticle()
         {
-            var attackRate = EnemyRandomData.Instance.GetRandomFireRate();
+            float attackRate = EnemyRandomData.Instance.GetRandomFireRate();
             enemyAttackDecided = true;
             yield return new WaitForSeconds(attackRate);
             enemyAttackEffect.Play();

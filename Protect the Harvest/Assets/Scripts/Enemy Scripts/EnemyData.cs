@@ -6,23 +6,23 @@ namespace Enemy_Scripts
     public class EnemyData : ScriptableObject
     {
         [Header("Health Stats")]
-        public float maxHealth;
-        public float minHealth;
+        public int maxHealth;
+        public int minHealth;
         [Space]
         
         [Header("Attack Stats")]
-        public float maxDamage;
-        public float minDamage;
+        public int maxDamage;
+        public int minDamage;
         [Space]
         
         [Header("Movement Stats")]
-        public float maxSpeed;
-        public float minSpeed;
+        public int maxSpeed;
+        public int minSpeed;
         [Space]
         
         [Header("Fire Stats")]
-        public float maxFireRate;
-        public float minFireRate;
+        public int maxFireRate;
+        public int minFireRate;
      
         
     }

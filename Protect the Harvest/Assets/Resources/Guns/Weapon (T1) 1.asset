@@ -15,7 +15,7 @@ MonoBehaviour:
   objectType: 0
   rarity: 1
   gunType: 8
-  effectValue: 0.878
+  effectValue: 10
   gameObject: {fileID: 0}
   gameObjectImage: {fileID: 21300000, guid: bdff19285bbdd094386feeda402ac9c4, type: 3}
   soundEffect: {fileID: 0}

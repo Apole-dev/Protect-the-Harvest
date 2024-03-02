@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using Interfaces;
 using Singleton;
-using Unity.VisualScripting;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace Enemy_Scripts
@@ -11,7 +9,6 @@ namespace Enemy_Scripts
     public class EnemyGenerator : MonoSingleton<EnemyGenerator>
     {
         #region Variables
-        // Components
         
         // Spawn parameters
         [Header("Spawn Parameters")]
@@ -23,75 +20,44 @@ namespace Enemy_Scripts
         [SerializeField] private GameObject enemyPrefab;
         [SerializeField] private Transform centerOfEnemyArea;
         [SerializeField] private Transform centerOfSafeArea;
-
-        // Control variables
-        public static float enemiesLimitNum = 2f;
-        private int _tempEnemiesCount = 0;
-
-        public bool isEnemyCountChanged = false;
-        private bool _spawnLimitController = false;
-
+        
         public GameObject enemyClone;
-        private StageCombatController _stageCombatController;
+        [SerializeField] private StageCombatController stageCombatController;
         
         // Lists to store enemies and their properties
         public readonly List<EnemyProperties> enemyPropertiesList = new List<EnemyProperties>();
+        public readonly List<Enemy> enemyScriptList = new List<Enemy>();
         
-        #endregion
-
-        #region Unity Callbacks
-        private void Awake()
-        {
-            // Initialize components
-            _stageCombatController = FindObjectOfType<StageCombatController>();
-        }
         
         #endregion
 
         #region Enemy Generation
-        public void InstantiateEnemy()
+
+        private void Start()
         {
-            //If spawn limit controller 
-            if (_spawnLimitController) return;
+            //first spawn
+            InstantiateEnemyWithCount(3);
+        }
 
-            // Positioning
+        private void InstantiateEnemy()
+        {
+            // Positioning & Spawning
             Vector3 randomPosition = GenerateRandomEnemyPosition(centerOfEnemyArea.position, swWidth: spawnWidth, swHeight: spawnHeight);
-
-            // Spawning
-            _tempEnemiesCount = EnemyProperties.enemiesCount;
             enemyClone = Instantiate(enemyPrefab, randomPosition, Quaternion.identity);
 
             // Setup
             SetupEnemy(enemyClone);
-           
-
-            // Check spawn limit
-            if (EnemyProperties.enemiesCount >= enemiesLimitNum)
-            {
-                print("Maximum enemy count reached");
-                _spawnLimitController = true;
-            }
-            else
-            {
-                _spawnLimitController = false;
-            }
-
-            // Check if enemy count has changed
-            if (_tempEnemiesCount < EnemyProperties.enemiesCount)
-            {
-                isEnemyCountChanged = true;
-            }
-
-            // Reset spawn limit controller if stage is passed
-            if (_stageCombatController.isStagePassed)                                                                             
-            {
-                print("StageCombatController.isStagePassed is active");
-                _spawnLimitController = false;
-            }
-            
-            print(EnemyProperties.enemiesCount);
-            
         }
+        
+        public void InstantiateEnemyWithCount(int enemiesCount)
+        {
+            for (int i = 0; i <= enemiesCount; i++)
+            {
+                InstantiateEnemy();
+            }
+        }
+
+
         
         private void SetupEnemy(GameObject enemy)
         {
@@ -99,11 +65,13 @@ namespace Enemy_Scripts
             enemy.name = "Enemy Clone " + EnemyProperties.enemiesCount;
             
             Enemy enemyScript = enemy.GetComponent<Enemy>();
+            enemyScriptList.Add(enemyScript);
             enemyScript.moveSpeed = EnemyRandomData.Instance.GetRandomSpeed();
             enemyScript.health = EnemyRandomData.Instance.GetRandomHealth();
             enemyScript.damage = EnemyRandomData.Instance.GetRandomDamage();
 
             EnemyProperties enemyProperties = new EnemyProperties(enemy, enemy.GetComponent<Rigidbody>(), enemyScript.moveSpeed, enemyScript.health, enemyScript.damage);
+            enemyScript.enemyProperties = enemyProperties;
             enemyPropertiesList.Add(enemyProperties);
             
         }

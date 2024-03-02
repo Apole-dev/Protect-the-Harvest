@@ -1,5 +1,4 @@
-﻿using System;
-using Interfaces;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Enemy_Scripts
@@ -12,6 +11,7 @@ namespace Enemy_Scripts
 
         // ReSharper disable once InconsistentNaming
         private EnemyGenerator enemyGenerator;
+        
 
         private void Awake() => enemyGenerator = EnemyGenerator.Instance;
 
@@ -20,31 +20,48 @@ namespace Enemy_Scripts
         
         private void AllEnemiesMove()
         {
-            try
+            foreach (var enemyScript in enemyGenerator.enemyScriptList)
             {
-                for (int i = 0; i < EnemyProperties.enemiesCount; i++)
+                switch (enemyScript.isInPool)
                 {
-                    MoveEnemy(enemyGenerator.enemyPropertiesList[i]);
-                    EnemyRotate(enemyGenerator.enemyPropertiesList[i]);
+                    case true:
+                        enemyGenerator.enemyPropertiesList.Remove(enemyScript.enemyProperties);
+                        break;
+                    case false when !enemyGenerator.enemyPropertiesList.Contains(enemyScript.enemyProperties):
+                        enemyGenerator.enemyPropertiesList.Add(enemyScript.enemyProperties);
+                        break;
                 }
             }
-            catch (Exception e)
+
+            foreach (var enemyProperties in enemyGenerator.enemyPropertiesList)
             {
-                throw;
+                MoveEnemy(enemyProperties);
+                RotateEnemy(enemyProperties);
             }
-            
         }
         
         private void MoveEnemy(EnemyProperties enemyProperties)
         {
             var direction = (playerGameObject.transform.position - enemyProperties.enemyPrefab.transform.position);
-            enemyProperties.enemyPrefabRigidBody.velocity = direction.normalized * (Time.fixedDeltaTime * enemyProperties.moveSpeed * 50f);
+            enemyProperties.enemyPrefabRigidBody.velocity = direction.normalized * (Time.fixedDeltaTime * enemyProperties.moveSpeed * 10f);
+        }
+
+        private void MoveEnemy(GameObject enemyObject,Rigidbody rb,bool isInPool = false)
+        {
+            var direction = (playerGameObject.transform.position - enemyObject.transform.position);
+            rb.velocity = direction.normalized * (Time.fixedDeltaTime * enemyObject.GetComponent<Enemy>().moveSpeed * 10f);
         }
         
-        private void EnemyRotate(EnemyProperties enemyProperties)
+        private void RotateEnemy(EnemyProperties enemyProperties)
         {
             var playerPosition = -playerGameObject.transform.position;
             enemyProperties.enemyPrefab.transform.LookAt(playerPosition*turnSpeed);
+        }
+
+        private void RotateEnemy(GameObject enemyObject)
+        {
+            var playerPosition = -playerGameObject.transform.position;
+            enemyObject.transform.LookAt(playerPosition*turnSpeed);
         }
     }
 }

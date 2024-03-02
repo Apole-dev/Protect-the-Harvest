@@ -549,31 +549,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 89589202}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2810263727827696073}
-        m_TargetAssemblyTypeName: Enemy_Scripts.EnemyAttack, Assembly-CSharp
-        m_MethodName: AssignValueOfAttack
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1023828869423757173}
-        m_TargetAssemblyTypeName: Enemy_Scripts.EnemyGenerator, Assembly-CSharp
-        m_MethodName: InstantiateEnemy
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &89589202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3593,7 +3569,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.33962262, g: 0.2881794, b: 0.19672479, a: 1}
+  m_BackGroundColor: {r: 0.754717, g: 0.69530725, b: 0.5439658, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -4974,6 +4950,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1193269428}
   m_CullTransparentMesh: 1
+--- !u!1 &1243111565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1243111566}
+  m_Layer: 0
+  m_Name: Instantiate Pos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1243111566
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1243111565}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2491.07, y: -224.31908, z: -64.59}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2037131569}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1244669594 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2929252283123773938, guid: aaa2c939c0359ac4dbce3f49e8b90252,
@@ -12101,6 +12108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d2564a08f8c4b0fb07c564fd79b4f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stage: 0
+  _enemyCountByStage: 0
   stageNumberText: {fileID: 1805711628}
   enemyImage: {fileID: 1006146728}
   enemyTypeSprite: {fileID: 21300000, guid: 5492368822298794cacc218137515af6, type: 3}
@@ -12111,6 +12120,7 @@ MonoBehaviour:
   speedImage: {fileID: 778065037}
   speedTypeSprite: {fileID: 21300000, guid: 336cb357e4d211f419fdabc6620bec90, type: 3}
   speedValue: {fileID: 419405442}
+  waitTimeForStagePass: 1.55
   isStagePassed: 0
 --- !u!1 &2037131568
 GameObject:
@@ -12143,6 +12153,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2129721876}
+  - {fileID: 1243111566}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2037131570
@@ -12158,7 +12169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolPlace: {fileID: 2129721876}
-  enemyInstantiatePlace: {fileID: 0}
+  enemyInstantiatePlace: {fileID: 1243111566}
 --- !u!1 &2106671736
 GameObject:
   m_ObjectHideFlags: 0
@@ -12334,9 +12345,9 @@ MonoBehaviour:
   spawnWidth: 5
   enemyPrefab: {fileID: 7057955888771362798}
   centerOfEnemyArea: {fileID: 1681659285}
-  centerOfSafeArea: {fileID: 3239508953501070428}
-  isEnemyCountChanged: 0
+  centerOfSafeArea: {fileID: 1243111566}
   enemyClone: {fileID: 0}
+  stageCombatController: {fileID: 2001694292}
 --- !u!114 &1112436557913917675 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7763312527732380928, guid: 75fcc3287949c5e43a114e0f7559be79,
@@ -12362,10 +12373,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: ' Main Enemy'
       objectReference: {fileID: 0}
+    - target: {fileID: 377772159497269765, guid: 75fcc3287949c5e43a114e0f7559be79,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6653921048750776212, guid: 75fcc3287949c5e43a114e0f7559be79,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.53
+      value: -41
       objectReference: {fileID: 0}
     - target: {fileID: 6653921048750776212, guid: 75fcc3287949c5e43a114e0f7559be79,
         type: 3}
@@ -12375,7 +12391,7 @@ PrefabInstance:
     - target: {fileID: 6653921048750776212, guid: 75fcc3287949c5e43a114e0f7559be79,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.85
+      value: 49.8
       objectReference: {fileID: 0}
     - target: {fileID: 6653921048750776212, guid: 75fcc3287949c5e43a114e0f7559be79,
         type: 3}
@@ -12449,6 +12465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf39cb2807b48ca8ee2df330a985857, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHealth: 0
 --- !u!114 &2810263727827696073
 MonoBehaviour:
   m_ObjectHideFlags: 0

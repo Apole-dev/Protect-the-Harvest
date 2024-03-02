@@ -1,52 +1,59 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Interfaces;
 using UnityEngine.UI;
 using UnityEngine;
-
 
 namespace Enemy_Scripts
 {
     [RequireComponent(typeof(Rigidbody))]
     public class Enemy : MonoBehaviour , IEnemy
     {
-        private EnemyPooling _enemyPooling;
+        #region Script Acsesser
         private EnemyHealth _enemyHealth;
+        #endregion
         
-        public static int killedEnemies = 0;
+
+        #region Game Acsessers
         
         [SerializeField] private Slider healthBar;
         [SerializeField] private new ParticleSystem particleSystem;
         
-        public float health;
-        public float damage;
-        public float moveSpeed;
-        public float attackRate;
-        
-        private float _tempHealth;
-        private float _tempDamage;
-        private float _tempMoveSpeed;
-        private float _tempAttackRate;
-        
-        private bool isInPool = false;
-        
+        #endregion
 
+        #region Enemy Properties 
+        
+        [HideInInspector]
+        public EnemyProperties enemyProperties;
+        
+        [Header("Enemy Stats")]
+        public int health;
+        public int damage;
+        public int moveSpeed;
+        public int attackRate;
 
+        private int _tempHealth;
+        private int _tempDamage;
+        private int _tempMoveSpeed;
+        private int _tempAttackRate;
+        
+        public static int killedEnemies = 0;
+        public bool isInPool = false;
+        
+        #endregion
+        
+        
         private void OnEnable()
         {
-            if (!isInPool) return;
-            damage = _tempDamage;
-            health = _tempHealth;
-            moveSpeed = _tempMoveSpeed;
-            attackRate = _tempAttackRate;
-            
-            healthBar.maxValue = health;
+            if (isInPool)
+            {
+                _enemyHealth.AssignHealth(healthBar,_tempHealth);
+            }
         }
 
 
         private void Awake()
         {
-            _enemyPooling = FindObjectOfType<EnemyPooling>();
+        
             _enemyHealth = FindObjectOfType<EnemyHealth>();
         }
 
@@ -56,26 +63,23 @@ namespace Enemy_Scripts
             _tempHealth = health;
             _tempMoveSpeed = moveSpeed;
             _tempAttackRate = attackRate;
+            
+            _enemyHealth.AssignHealth(healthBar, health);
         }
-
-        private void Update()
-        {
-            print("Health: " + health );
-        }
-
-
+        
+        
         public void ReduceHealth(float playerDamage)
         {
            bool isDead = _enemyHealth.ReduceHealth(playerDamage, healthBar);
-           print(isDead);
-           print("Reduce health is working +" + playerDamage);
+           
            if (isDead)
            {
                print("Enemy died");
+                   
                killedEnemies++;
                StartCoroutine(PlayParticleEffect());
-               _enemyPooling.MoveEnemyToPool(gameObject);
-               isInPool = true;
+               
+               MoveToThePool();
            }
         }
 
@@ -84,7 +88,16 @@ namespace Enemy_Scripts
             yield return new WaitForSeconds(0.3f);
             particleSystem.Play();
         }
-        
+
+        public void MoveToThePool()
+        {
+           EnemyPooling.Instance.MoveEnemyToPool(this); 
+        }
+
+        public void ReturnFromPool()
+        {
+            EnemyPooling.Instance.ReturnEnemyFromPool(this);
+        }
     }
 }
 

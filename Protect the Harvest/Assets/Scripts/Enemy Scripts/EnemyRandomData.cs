@@ -7,26 +7,26 @@ namespace Enemy_Scripts
 {
     public class EnemyRandomData : MonoSingleton<EnemyRandomData>
     {
-        [SerializeField] EnemyData enemyData;
+        [SerializeField] private EnemyData enemyData;
         
         [Header("Health Stats")]
-        private float _maxHealth;
-        private float _minHealth;
+        private int _maxHealth;
+        private int _minHealth;
         [Space]
         
         [Header("Attack Stats")]
-        private float _maxDamage;
-        private float _minDamage;
+        private int _maxDamage;
+        private int _minDamage;
         [Space]
         
         [Header("Movement Stats")]
-        private float _maxSpeed;
-        private float _minSpeed;
+        private int _maxSpeed;
+        private int _minSpeed;
         [Space]
         
         [Header("Fire Stats")]
-        private float _maxFireRate;
-        private float _minFireRate;
+        private int _maxFireRate;
+        private int _minFireRate;
 
         private void Awake()
         {
@@ -48,22 +48,22 @@ namespace Enemy_Scripts
             _minFireRate =enemyData.minFireRate;
         }
 
-        public float GetRandomHealth()
+        public int GetRandomHealth()
         {
             return Random.Range(_minHealth, _maxHealth);
         }
 
-        public float GetRandomDamage()
+        public int GetRandomDamage()
         { 
             return Random.Range(_minDamage, _maxDamage);
         }
 
-        public float GetRandomSpeed()
+        public int GetRandomSpeed()
         {
             return Random.Range(_minSpeed, _maxSpeed);
         }
 
-        public float GetRandomFireRate()
+        public int GetRandomFireRate()
         {
             return Random.Range(_minFireRate, _maxFireRate);
         }
