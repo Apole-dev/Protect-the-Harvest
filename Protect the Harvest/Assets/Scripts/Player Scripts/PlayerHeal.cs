@@ -6,27 +6,19 @@ namespace Player_Scripts
 {
     public class PlayerHeal : MonoBehaviour
     {
-        public static float currentHeal;
-        private float healValue;
-        private Inventory _inventory;
-        
+        public int currentHealth{ get; private set; } = 50;
         [SerializeField] private Slider playerHealthBar;
-
-        private void Awake()
+        
+        public void Heal(int healValue)
         {
-            _inventory = FindObjectOfType<Inventory>();
-        }
-
-        public void Heal()
-        {
-            healValue += _inventory.chosenHealth;
-            playerHealthBar.value = currentHeal;
+            playerHealthBar.value += healValue;
+            playerHealthBar.value = currentHealth;
         }
 
         public void ReduceHealth(float damage)
         {
             playerHealthBar.value -= damage;
-            currentHeal = playerHealthBar.value;
+            currentHealth = (int)playerHealthBar.value;
         }
     }
 }

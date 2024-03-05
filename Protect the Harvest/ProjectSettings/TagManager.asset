@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Spawn Manger Object
+  - Fence
   layers:
   - Default
   - TransparentFX

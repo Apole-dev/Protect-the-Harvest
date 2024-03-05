@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Singleton;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,6 +12,7 @@ namespace Enemy_Scripts
         [SerializeField] private Transform enemyInstantiatePlace;
         
         public readonly List<Enemy> enemiesScriptInPool = new List<Enemy>();
+        public int tempEnemyScriptInPool;
 
         public void MoveEnemyToPool(Enemy enemyObjectScript)
         { 
@@ -28,6 +28,7 @@ namespace Enemy_Scripts
         public void ReturnEnemyFromPool(Enemy enemyObjectScript)
         {
             if(enemyObjectScript == null) return;
+            tempEnemyScriptInPool = enemiesScriptInPool.Count;
             
             enemiesScriptInPool.Remove(enemyObjectScript);
             Vector3 position = enemyInstantiatePlace.position;
@@ -35,12 +36,6 @@ namespace Enemy_Scripts
             enemyObjectScript.GameObject().SetActive(true);
             enemyObjectScript.isInPool = false;
         }
-
-        public void GetRandomEnemyFromPool(int enemyCount)
-        {
-            
-        }
-        
         
     }
 }

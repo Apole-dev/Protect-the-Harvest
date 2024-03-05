@@ -5042,11 +5042,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b05c90d9feb4702967b4cfde3acac4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
-  healthBar: {fileID: 5035959556204628658}
-  currentHealth: 0
-  currentDamage: 0
-  currentDefence: 0
 --- !u!54 &7264228548128390123
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5320,6 +5315,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa8a5788b514bbca1e88bb790021fc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHeal: 0
+  playerHealthBar: {fileID: 5035959556204628658}
 --- !u!1 &8511394774159746504
 GameObject:
   m_ObjectHideFlags: 0
@@ -5364,7 +5361,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc8a7b69bf874606afdc67eab067461c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
   playerInventory: {fileID: 0}
   startWidth: 0.16
   endWidth: 0.1
@@ -5374,7 +5370,8 @@ MonoBehaviour:
   lineRenderer: {fileID: 8097973183040226480}
   gunShootDistance: 5
   animator: {fileID: 0}
-  shootEffect: {fileID: 9205353384397874736}
+  attackText: {fileID: 0}
+  effectManager: {fileID: 0}
 --- !u!1001 &117550698942183961
 PrefabInstance:
   m_ObjectHideFlags: 0

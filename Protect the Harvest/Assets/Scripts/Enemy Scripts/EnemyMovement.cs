@@ -1,67 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using Singleton;
 using UnityEngine;
 
 namespace Enemy_Scripts
 {
-    public class EnemyMovement : MonoBehaviour
+    public class EnemyMovement : MonoSingleton<EnemyMovement>
     {
         
         [SerializeField] private GameObject playerGameObject;
-        [SerializeField] private float turnSpeed = 100f;
+        [SerializeField] private float turnSpeed = 500f;
 
-        // ReSharper disable once InconsistentNaming
-        private EnemyGenerator enemyGenerator;
-        
-
-        private void Awake() => enemyGenerator = EnemyGenerator.Instance;
-
-        private void FixedUpdate() => AllEnemiesMove();
-        
-        
-        private void AllEnemiesMove()
+        public void MoveEnemy(Enemy enemy)
         {
-            foreach (var enemyScript in enemyGenerator.enemyScriptList)
-            {
-                switch (enemyScript.isInPool)
-                {
-                    case true:
-                        enemyGenerator.enemyPropertiesList.Remove(enemyScript.enemyProperties);
-                        break;
-                    case false when !enemyGenerator.enemyPropertiesList.Contains(enemyScript.enemyProperties):
-                        enemyGenerator.enemyPropertiesList.Add(enemyScript.enemyProperties);
-                        break;
-                }
-            }
+            Vector3 direction = (playerGameObject.transform.position - enemy.transform.position).normalized;
+            enemy.enemyRigidBody.velocity = direction * (Time.fixedDeltaTime * enemy.speed * 10f);
 
-            foreach (var enemyProperties in enemyGenerator.enemyPropertiesList)
+            if (Mathf.Abs(enemy.enemyRigidBody.velocity.z) <= 0.15f)
             {
-                MoveEnemy(enemyProperties);
-                RotateEnemy(enemyProperties);
+                print("added force due to zero velocity");
+                enemy.enemyRigidBody.AddForce(enemy.enemyRigidBody.velocity * 10f, ForceMode.Impulse);
             }
         }
-        
-        private void MoveEnemy(EnemyProperties enemyProperties)
+        public void RotateEnemy(Enemy enemy)
         {
-            var direction = (playerGameObject.transform.position - enemyProperties.enemyPrefab.transform.position);
-            enemyProperties.enemyPrefabRigidBody.velocity = direction.normalized * (Time.fixedDeltaTime * enemyProperties.moveSpeed * 10f);
-        }
+            Vector3 playerPosition = -playerGameObject.transform.position;
+            Vector3 targetDirection = playerPosition + enemy.transform.position;
 
-        private void MoveEnemy(GameObject enemyObject,Rigidbody rb,bool isInPool = false)
-        {
-            var direction = (playerGameObject.transform.position - enemyObject.transform.position);
-            rb.velocity = direction.normalized * (Time.fixedDeltaTime * enemyObject.GetComponent<Enemy>().moveSpeed * 10f);
+            Quaternion rotation = Quaternion.LookRotation(targetDirection);
+            enemy.transform.rotation = Quaternion.RotateTowards(enemy.transform.rotation, rotation, turnSpeed * Time.fixedDeltaTime);
         }
         
-        private void RotateEnemy(EnemyProperties enemyProperties)
-        {
-            var playerPosition = -playerGameObject.transform.position;
-            enemyProperties.enemyPrefab.transform.LookAt(playerPosition*turnSpeed);
-        }
-
-        private void RotateEnemy(GameObject enemyObject)
-        {
-            var playerPosition = -playerGameObject.transform.position;
-            enemyObject.transform.LookAt(playerPosition*turnSpeed);
-        }
+        
     }
 }

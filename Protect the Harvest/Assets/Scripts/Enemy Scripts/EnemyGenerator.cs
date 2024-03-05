@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Singleton;
 using Random = UnityEngine.Random;
 
@@ -23,21 +21,14 @@ namespace Enemy_Scripts
         
         public GameObject enemyClone;
         [SerializeField] private StageCombatController stageCombatController;
-        
-        // Lists to store enemies and their properties
-        public readonly List<EnemyProperties> enemyPropertiesList = new List<EnemyProperties>();
-        public readonly List<Enemy> enemyScriptList = new List<Enemy>();
+
+        public int enemyCount{ get; private set; }
         
         
         #endregion
 
         #region Enemy Generation
-
-        private void Start()
-        {
-            //first spawn
-            InstantiateEnemyWithCount(3);
-        }
+        
 
         private void InstantiateEnemy()
         {
@@ -51,7 +42,7 @@ namespace Enemy_Scripts
         
         public void InstantiateEnemyWithCount(int enemiesCount)
         {
-            for (int i = 0; i <= enemiesCount; i++)
+            for (int i = 0; i < enemiesCount; i++)
             {
                 InstantiateEnemy();
             }
@@ -61,19 +52,15 @@ namespace Enemy_Scripts
         
         private void SetupEnemy(GameObject enemy)
         {
+            
             enemy.tag = "Enemy";
-            enemy.name = "Enemy Clone " + EnemyProperties.enemiesCount;
+            enemy.name = "Enemy Clone " + enemyCount++;
+            Enemy enemyScript = enemy.AddComponent<Enemy>();
             
-            Enemy enemyScript = enemy.GetComponent<Enemy>();
-            enemyScriptList.Add(enemyScript);
-            enemyScript.moveSpeed = EnemyRandomData.Instance.GetRandomSpeed();
-            enemyScript.health = EnemyRandomData.Instance.GetRandomHealth();
             enemyScript.damage = EnemyRandomData.Instance.GetRandomDamage();
-
-            EnemyProperties enemyProperties = new EnemyProperties(enemy, enemy.GetComponent<Rigidbody>(), enemyScript.moveSpeed, enemyScript.health, enemyScript.damage);
-            enemyScript.enemyProperties = enemyProperties;
-            enemyPropertiesList.Add(enemyProperties);
-            
+            enemyScript.fireRate = EnemyRandomData.Instance.GetRandomFireRate();
+            enemyScript.speed = EnemyRandomData.Instance.GetRandomSpeed();
+            enemyScript.health = EnemyRandomData.Instance.GetRandomHealth();
         }
         
         #endregion

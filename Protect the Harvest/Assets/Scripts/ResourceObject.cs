@@ -14,8 +14,8 @@ public class ResourceObject :ScriptableObject
     public GunType gunType;
     
     [Tooltip("Positive Effect value of object")] 
-    [Range(1f,10f)]
-    public float effectValue;
+    [Range(1,10)]
+    public int effectValue;
 
     [Tooltip("3D Game object ")]
     public GameObject gameObject;

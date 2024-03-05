@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections;
-using System.Diagnostics;
-using Enemy_Scripts;
+﻿using System.Collections;
+using System.Globalization;
 using Enums;
 using Interfaces;
+using Managers;
 using Singleton;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 
 namespace Player_Scripts
 {
     public class PlayerAttack : MonoSingleton<PlayerAttack>
     {
-        #region General Acsessers
-
-        [Header("General Accessors")] 
-        public static bool stagePassed;
-        
-        #endregion
         
         #region Scripts Accessers
         [Header("Scripts Accessors")]
@@ -45,18 +39,17 @@ namespace Player_Scripts
         
         [Header("Player Attributes")]
         [SerializeField] private Animator animator;
+        [SerializeField] private EffectManager effectManager;
 
         private GameObject _enemyGameObject;
-        private float _attackDamage;
+        public int currentAttackDamage { get; private set; }
         #endregion
 
         #region Shoot Effect
         [Space]
         
         [Header("Shoot Effect")]
-        [SerializeField] private ParticleSystem shootEffect;
         private bool _isHit;
-        private bool _shootEffectPlaying = false;
         private bool _attackActive = false;
         #endregion
         
@@ -72,26 +65,9 @@ namespace Player_Scripts
                 StartCoroutine(PlayShootEffect());
             }
         }
+          
 
-        private void Attack()
-        {
-            if (_isHit)
-                _enemyGameObject.GetComponent<IEnemy>().ReduceHealth(playerDamage: _attackDamage);
-        }
-        
-        private IEnumerator PlayShootEffect() //Shoot effect playing 1 more time. FIXME need to be fixed
-        {
-            // if (!_shootEffectPlaying)
-            // {
-            //     _shootEffectPlaying = true;
-            //     yield return new WaitForSeconds(0.5f);
-            //     shootEffect.Play();
-            //     _shootEffectPlaying = false;
-            // }
-            yield return new WaitForSeconds(0.5f);
-            shootEffect.Play();
-        }
-        
+        #region Attack Section
         private IEnumerator AttackInRate()
         {
             if (!_attackActive)
@@ -102,6 +78,23 @@ namespace Player_Scripts
                 _attackActive = false;
             }
         }
+        private void Attack()
+        {
+            if (_isHit) _enemyGameObject.GetComponent<IEnemy>().ReduceHealth(playerDamage: currentAttackDamage);
+        }
+        
+        /// <summary>
+        /// Plays the shoot effect
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator PlayShootEffect() //Shoot effect playing 1 more time. FIXME need to be fixed
+        {
+            yield return new WaitForSeconds(0.5f);
+            effectManager.PlayPlayerAttackEffect();
+        }
+
+        #endregion
+
 
 
         public void DrawWeaponShootLine()
@@ -114,21 +107,7 @@ namespace Player_Scripts
             DrawLine(origin, origin + transformDirection * gunShootDistance); 
             
             #endregion
-
-            #region Player Properties
             
-            _currentGunType = playerInventory.gunType;
-            gunShootDistance = (int)_currentGunType;
-            print("PlayerAttack.cs | Gun Type: " + _currentGunType);
-
-            var tempShootDistance = gunShootDistance;
-            print("PlayerAttack.cs | Gun Shoot Distance: " + gunShootDistance);
-            
-            _attackDamage = playerInventory.chosenDamage;
-            print("PlayerAttack.cs | Attack Damage: " + _attackDamage);
-            
-            #endregion
-
             #region Raycast
             
             if (Physics.Raycast(origin, transformDirection, out var hit, gunShootDistance, enemyMask))
@@ -157,7 +136,7 @@ namespace Player_Scripts
                 lineRenderer.material.color = Color.white;
                 
                 //Reset the gunShootDistance
-                gunShootDistance = tempShootDistance;
+                gunShootDistance = _currentGunType.GetHashCode();
                 
                 _isHit = false;
             }
@@ -166,8 +145,14 @@ namespace Player_Scripts
 
             #endregion
         }
-        
-        
+
+
+        public void AssignGun(GunType newGunType, int newDamage)
+        {
+            _currentGunType = newGunType;
+            gunShootDistance = (int)_currentGunType;
+            currentAttackDamage = newDamage;
+        }
 
         /// <summary>
         /// Configures the line renderer

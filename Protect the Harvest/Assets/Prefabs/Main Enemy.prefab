@@ -158,7 +158,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6653921048750776212}
   - component: {fileID: 8029136655778816781}
-  - component: {fileID: 7763312527732380928}
   - component: {fileID: 3945783662591979722}
   m_Layer: 3
   m_Name: Main Enemy
@@ -205,24 +204,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.4729415, z: 1}
   m_Center: {x: 0, y: 0.76352924, z: 0}
---- !u!114 &7763312527732380928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377772159497269765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c547f38f748409db97ad4b0ad6d1ce6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 0}
-  particleSystem: {fileID: 0}
-  health: 0
-  damage: 0
-  moveSpeed: 0
-  attackRate: 0
 --- !u!54 &3945783662591979722
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6584,7 +6565,7 @@ GameObject:
   - component: {fileID: 2554392737461746757}
   - component: {fileID: 2250577762431180015}
   m_Layer: 3
-  m_Name: Slider
+  m_Name: Enemy Health Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -27,16 +27,8 @@ MonoBehaviour:
         - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-111766735-0
         - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-723262855-0
         - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1173966271-0
-        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1745388247-0
-        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-63068202-0
-        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-795900201-0
-        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1831270951-0
-        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-2001154418-0
-        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1306315661-0
-        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1592114036-0
-        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1976473315-0
-        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1554257244-0
-        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1496604252-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1075701096-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-763246685-0
         values:
         - iColor: 0
           icon: MeshCollider Icon
@@ -54,28 +46,12 @@ MonoBehaviour:
           icon: 
         - iColor: 6
           icon: 
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
         - iColor: 0
           icon: MeshCollider Icon
         - iColor: 0
           icon: MeshCollider Icon
       goDatasByInstanceId:
-        keys: 266d0000766d0000c46c0000946d0000f46c0000d86c0000706d0000f46d0000262dfaff2c2dfaff2a2dfaff282dfaff242dfaff183ef9ff203ef9ff1e3ef9ff1c3ef9ff1a3ef9ff
+        keys: 406d0000806d0000d06c0000a06d0000006d0000e46c00007a6d00001c6e0000c8d6feffc6d6feff
         values:
         - iColor: 0
           icon: MeshCollider Icon
@@ -93,22 +69,6 @@ MonoBehaviour:
           icon: 
         - iColor: 6
           icon: 
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
-        - iColor: 0
-          icon: MeshCollider Icon
         - iColor: 0
           icon: MeshCollider Icon
         - iColor: 0

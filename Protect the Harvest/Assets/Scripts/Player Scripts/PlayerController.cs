@@ -4,10 +4,10 @@ namespace Player_Scripts
 {
     public class PlayerController : MonoBehaviour
     {
+        
+        public int currentSpeed = 250;
+        
         #region Serialized Fields
-
-        [Header("Movement Settings")]
-        [SerializeField] private float moveSpeed;
 
         [Header("Joystick Settings")]
         [SerializeField] private float deadZone = 0.1f; // Joystick dead-zone threshold
@@ -59,7 +59,7 @@ namespace Player_Scripts
 
         private Vector3 GetNewVelocity()
         {
-            return new Vector3(_horizontal, 0, _vertical) * (moveSpeed * Time.fixedDeltaTime);
+            return new Vector3(_horizontal, 0, _vertical) * (currentSpeed * Time.fixedDeltaTime);
         }
 
         #endregion

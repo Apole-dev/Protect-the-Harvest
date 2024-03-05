@@ -1,4 +1,5 @@
-﻿using UnityEngine.UI;
+﻿using Enemy_Scripts;
+using UnityEngine.UI;
 using UnityEngine;
 using Managers;
 using Enums;
@@ -29,12 +30,13 @@ namespace Player_Scripts
         [SerializeField] private bool isCardSelection;
 
         [Header("Attributes")]
-        public int chosenCard;
-        public float chosenDamage;
-        public float chosenHealth;
-        public float chosenShield;
+        public int chosenDamage;
+        public int chosenHealth;
         public GunType gunType;
 
+        [SerializeField] private Fence fence;
+        [SerializeField] private PlayerHeal playerHeal;
+        [SerializeField] private PlayerAttack playerAttack;
         
 
         #endregion
@@ -44,6 +46,10 @@ namespace Player_Scripts
         private void Awake()
         {
             CheckReferences();
+            
+            //If Not Gun Chosen give pistol as a first gun 
+            gunType = GunType.Pistol;
+            chosenDamage = 1;
         }
 
         private void Start()
@@ -92,22 +98,24 @@ namespace Player_Scripts
 
         public void WeaponClick()
         {
-            chosenDamage = ResourceManager.Instance.clickWeaponResourceObject.effectValue;
             gunType = ResourceManager.Instance.clickWeaponResourceObject.gunType;
+            chosenDamage = ResourceManager.Instance.clickWeaponResourceObject.effectValue;
+            playerAttack.AssignGun(gunType, chosenDamage);
             isCardSelection = false;
             ResourceManager.Instance.RandomObjectGenerator();
         }
 
         public void ShieldClick()
         {
-            chosenShield = ResourceManager.Instance.clickShieldResourceObject.effectValue;
             isCardSelection = false;
+            fence.ChangeFence(fence.GetRandomFenceType());
             ResourceManager.Instance.RandomObjectGenerator();
         }
 
         public void HealthClick()
         {
             chosenHealth = ResourceManager.Instance.clickHealthResourceObject.effectValue;
+            playerHeal.Heal(chosenHealth);
             isCardSelection = false;
             ResourceManager.Instance.RandomObjectGenerator();
         }

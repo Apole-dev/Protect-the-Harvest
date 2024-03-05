@@ -1,10 +1,21 @@
-﻿namespace Interfaces
+﻿using UnityEngine;
+
+namespace Interfaces
 {
     public interface IEnemy
     {
+        public int damage { get; set; }
+        public int health { get; set; }
+
+        public int speed { get; set; }
+        
+        public int fireRate { get; set; }
+        
+        
         public void ReduceHealth(float playerDamage);
         
         public void MoveToThePool();
         public void ReturnFromPool();
+        
     }
 }

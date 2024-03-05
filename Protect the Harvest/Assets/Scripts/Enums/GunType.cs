@@ -3,12 +3,12 @@
     public enum GunType
     {
         // Shooting distance in meters
-        Pistol = 4,
-        Shotgun = 3,
-        Rifle = 8,
-        SniperRifle = 10,
-        MachineGun = 6,
-        GrenadeLauncher = 5,
-        AssaultRifle = 7,
+        Pistol = 10,
+        Shotgun = 6,
+        Rifle = 15,
+        SniperRifle = 20,
+        MachineGun = 12,
+        GrenadeLauncher = 10,
+        AssaultRifle = 18,
     }
 }
