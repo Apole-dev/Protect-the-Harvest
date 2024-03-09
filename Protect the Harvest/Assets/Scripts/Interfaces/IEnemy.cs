@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Interfaces
 {
@@ -13,6 +14,9 @@ namespace Interfaces
         
         
         public void ReduceHealth(float playerDamage);
+
+        public void PushBack(float pushAmount);
+        public void ChangeColor(Color color);
         
         public void MoveToThePool();
         public void ReturnFromPool();

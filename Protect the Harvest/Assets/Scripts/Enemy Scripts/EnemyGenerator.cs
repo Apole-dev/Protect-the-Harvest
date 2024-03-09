@@ -23,7 +23,7 @@ namespace Enemy_Scripts
         [SerializeField] private StageCombatController stageCombatController;
 
         public int enemyCount{ get; private set; }
-        
+        [SerializeField] private Material hitMaterial;
         
         #endregion
 
@@ -61,6 +61,7 @@ namespace Enemy_Scripts
             enemyScript.fireRate = EnemyRandomData.Instance.GetRandomFireRate();
             enemyScript.speed = EnemyRandomData.Instance.GetRandomSpeed();
             enemyScript.health = EnemyRandomData.Instance.GetRandomHealth();
+            enemyScript.hitMaterial = hitMaterial;
         }
         
         #endregion

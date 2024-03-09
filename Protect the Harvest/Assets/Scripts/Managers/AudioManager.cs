@@ -1,4 +1,6 @@
-﻿using Singleton;
+﻿using System;
+using Enums;
+using Singleton;
 using UnityEngine;
 
 namespace Managers
@@ -25,7 +27,7 @@ namespace Managers
         [SerializeField] private AudioClip sniperRifle;
         [SerializeField] private AudioClip machineGun;
         [SerializeField] private AudioClip rocketLauncher;
-        [SerializeField] private AudioClip grenadeLauncher;
+        [SerializeField] private AudioClip assaultRifleSound;
 
         [Header("Shield Sounds")]
         [SerializeField] private AudioClip shieldPickup;
@@ -43,6 +45,37 @@ namespace Managers
             _audioSource = GetComponent<AudioSource>();
         }
 
+        public void PlayGunSound(GunType gunType)
+        {
+            switch (gunType)
+            {
+                case GunType.Pistol:
+                    PlayPistolSound();
+                    break;
+                case GunType.Shotgun:
+                    PlayShotgunSound();
+                    break;
+                case GunType.Rifle:
+                    PlayRifleSound();
+                    break;
+                case GunType.SniperRifle:
+                    PlaySniperRifleSound();
+                    break;
+                case GunType.MachineGun:
+                    PlayMachineGunSound();
+                    break;
+                case GunType.AssaultRifle:
+                    PlayAssaultRifleSound();
+                    break;
+                case GunType.RocketLauncher:
+                    PlayRocketLauncherSound();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(gunType), gunType, null);
+            }
+        }
+
+        #region Player Enemy General Sounds
         // Method to play the player win sound.
         private void PlayPlayerWinSound()
         {
@@ -66,48 +99,63 @@ namespace Managers
         {
             AudioSource.PlayClipAtPoint(enemyLoseSound, transform.position);
         }
+        
+
+        #endregion
+
+
+        #region Weapon Specific Sounds
 
         // Method to play the pistol sound.
         private void PlayPistolSound()
         {
-            AudioSource.PlayClipAtPoint(pistol, transform.position);
+            print("PlayPistolSound");
+            //AudioSource.PlayClipAtPoint(pistol, transform.position);
         }
 
         // Method to play the shotgun sound.
         private void PlayShotgunSound()
         {
-            AudioSource.PlayClipAtPoint(shotgun, transform.position);
+            print("PlayShotgunSound");
+            //AudioSource.PlayClipAtPoint(shotgun, transform.position);
         }
 
         // Method to play the rifle sound.
         private void PlayRifleSound()
         {
-            AudioSource.PlayClipAtPoint(rifle, transform.position);
+            print("PlayRifleSound");
+            //AudioSource.PlayClipAtPoint(rifle, transform.position);
         }
 
         // Method to play the sniper rifle sound.
         private void PlaySniperRifleSound()
         {
-            AudioSource.PlayClipAtPoint(sniperRifle, transform.position);
+            print("PlaySniperRifleSound");
+            //AudioSource.PlayClipAtPoint(sniperRifle, transform.position);
         }
 
         // Method to play the machine gun sound.
         private void PlayMachineGunSound()
         {
-            AudioSource.PlayClipAtPoint(machineGun, transform.position);
+            print("PlayMachineGunSound");
+            //AudioSource.PlayClipAtPoint(machineGun, transform.position);
+        }
+        // Method to play the assault rifle sound.
+        private void PlayAssaultRifleSound()
+        {
+            print("PlayAssaultRifleSound");
+            //AudioSource.PlayClipAtPoint(assaultRifleSound, transform.position);
         }
 
         // Method to play the rocket launcher sound.
         private void PlayRocketLauncherSound()
         {
-            AudioSource.PlayClipAtPoint(rocketLauncher, transform.position);
+            print("PlayRocketLauncherSound");
+            //AudioSource.PlayClipAtPoint(rocketLauncher, transform.position);
         }
 
-        // Method to play the grenade launcher sound.
-        private void PlayGrenadeLauncherSound()
-        {
-            AudioSource.PlayClipAtPoint(grenadeLauncher, transform.position);
-        }
+        #endregion
+
 
         // Method to play the shield pickup sound.
         private void PlayShieldPickupSound()
@@ -138,7 +186,13 @@ namespace Managers
         {
             AudioSource.PlayClipAtPoint(healthRecharge, transform.position);
         }
+        
 
+        public void PlayShieldBrokeSound()
+        {
+            // Implementation to play specific sound
+        }
+        
         public void StopSound(string soundName)
         {
             // Implementation to stop specific sound
@@ -147,11 +201,6 @@ namespace Managers
         public void AdjustVolume(int volumeLevel)
         {
             // Implementation to adjust volume
-        }
-
-        public void PlayShieldBrokeSound()
-        {
-            print("shield broke");
         }
     }
 }

@@ -1,9 +1,13 @@
-﻿using Enemy_Scripts;
+﻿
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.UI;
 using UnityEngine;
 using Managers;
 using Enums;
+using Player_Scripts.Weapons;
 using TMPro;
+
 
 
 namespace Player_Scripts
@@ -30,9 +34,11 @@ namespace Player_Scripts
         [SerializeField] private bool isCardSelection;
 
         [Header("Attributes")]
-        public int chosenDamage;
-        public int chosenHealth;
+        public int selectedDamage;
+        public int selectedHealth;
         public GunType gunType;
+        public Weapon selectedWeapon;
+        private List<Weapon> _weaponsList;
 
         [SerializeField] private Fence fence;
         [SerializeField] private PlayerHeal playerHeal;
@@ -46,15 +52,18 @@ namespace Player_Scripts
         private void Awake()
         {
             CheckReferences();
-            
-            //If Not Gun Chosen give pistol as a first gun 
-            gunType = GunType.Pistol;
-            chosenDamage = 1;
+            _weaponsList = FindObjectsOfType<MonoBehaviour>().OfType<Weapon>().ToList();
         }
 
         private void Start()
         {
+            //If Not Gun Chosen give pistol as a first gun 
+            gunType = GunType.Pistol;
+            selectedDamage = 1;
+            
             ResourceManager.Instance.RandomObjectGenerator();
+
+            
         }
 
         private void FixedUpdate()
@@ -98,11 +107,25 @@ namespace Player_Scripts
 
         public void WeaponClick()
         {
+            //Weapon Objects Data's  
             gunType = ResourceManager.Instance.clickWeaponResourceObject.gunType;
-            chosenDamage = ResourceManager.Instance.clickWeaponResourceObject.effectValue;
-            playerAttack.AssignGun(gunType, chosenDamage);
-            isCardSelection = false;
-            ResourceManager.Instance.RandomObjectGenerator();
+            selectedDamage = ResourceManager.Instance.clickWeaponResourceObject.effectValue;
+
+            foreach (var weapon in _weaponsList)
+            {
+                if (weapon.gunType == gunType)
+                {
+                    selectedWeapon = weapon;
+                    selectedWeapon.damage = selectedDamage;
+                    print(selectedWeapon);
+                }
+            }
+            
+            playerAttack.AssignGun(gunType, selectedDamage); //Assign the gun type and damage for player attack script
+            
+            isCardSelection = false; //Show the card selection screen
+            
+            ResourceManager.Instance.RandomObjectGenerator(); //Reset the objects and generate new ones
         }
 
         public void ShieldClick()
@@ -114,8 +137,8 @@ namespace Player_Scripts
 
         public void HealthClick()
         {
-            chosenHealth = ResourceManager.Instance.clickHealthResourceObject.effectValue;
-            playerHeal.Heal(chosenHealth);
+            selectedHealth = ResourceManager.Instance.clickHealthResourceObject.effectValue;
+            playerHeal.Heal(selectedHealth);
             isCardSelection = false;
             ResourceManager.Instance.RandomObjectGenerator();
         }

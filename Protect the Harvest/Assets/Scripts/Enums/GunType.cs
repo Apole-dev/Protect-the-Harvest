@@ -8,7 +8,7 @@
         Rifle = 15,
         SniperRifle = 20,
         MachineGun = 12,
-        GrenadeLauncher = 10,
+        RocketLauncher = 8,
         AssaultRifle = 18,
     }
 }

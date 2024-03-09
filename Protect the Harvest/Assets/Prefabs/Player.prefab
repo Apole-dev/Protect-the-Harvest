@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 671d373439434a0ab63a8b19e8b3d814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 150
+  currentSpeed: 250
   deadZone: 0.01
   joystick: {fileID: 0}
   rotationLerpSpeed: 10
@@ -101,6 +101,7 @@ MonoBehaviour:
   buttonAbilityImage: {fileID: 0}
   coolDown: 3
   isInCoolDown: 0
+  currentAbility: 
 --- !u!1 &4064700905074835606
 GameObject:
   m_ObjectHideFlags: 0
@@ -5025,9 +5026,9 @@ Transform:
   - {fileID: 6130006849950868293}
   - {fileID: 3386029991776969440}
   - {fileID: 5187713662187885511}
-  - {fileID: 444491601200373234}
   - {fileID: 5685752370199651411}
   - {fileID: 8398480527449533254}
+  - {fileID: 444491601200373234}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2537968746927801193
@@ -5042,6 +5043,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b05c90d9feb4702967b4cfde3acac4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
+  damage: 0
+  shield: 0
+  speed: 0
+  healthText: {fileID: 0}
+  damageText: {fileID: 0}
+  shieldText: {fileID: 0}
 --- !u!54 &7264228548128390123
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5205,7 +5213,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5187713662187885511}
-  - component: {fileID: 7897974899083258529}
   m_Layer: 0
   m_Name: Player Defence
   m_TagString: Untagged
@@ -5228,18 +5235,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1617693830158120516}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7897974899083258529
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5405774498159716513}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a85fadf733e4194ad43d05c6ec6a864, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5865781042105713917
 GameObject:
   m_ObjectHideFlags: 0
@@ -5315,7 +5310,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa8a5788b514bbca1e88bb790021fc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHeal: 0
   playerHealthBar: {fileID: 5035959556204628658}
 --- !u!1 &8511394774159746504
 GameObject:
@@ -5369,9 +5363,11 @@ MonoBehaviour:
     m_Bits: 8
   lineRenderer: {fileID: 8097973183040226480}
   gunShootDistance: 5
-  animator: {fileID: 0}
-  attackText: {fileID: 0}
+  notHitColor: {r: 1, g: 1, b: 1, a: 1}
+  hitColor: {r: 0, g: 1, b: 0, a: 1}
   effectManager: {fileID: 0}
+  enemyGameObject: {fileID: 0}
+  currentGunType: 0
 --- !u!1001 &117550698942183961
 PrefabInstance:
   m_ObjectHideFlags: 0

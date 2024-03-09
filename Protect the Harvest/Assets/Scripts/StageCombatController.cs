@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Enemy_Scripts;
 using Managers;
-using Player_Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,18 +10,18 @@ using UnityEngine.UI;
 public class StageCombatController : MonoBehaviour
 {
 
+    [Header("Stage Details")]
     [SerializeField] private int stage;
     [SerializeField] private int enemyCountByStage;
-    
 
     [SerializeField] private TMP_Text stageNumberText;
-
+    [SerializeField] private float waitTimeForStagePass = 3f;
+    [Space]
+    
     [Header("Enemy Details")]
     [SerializeField] private Image enemyImage;
     [SerializeField] private Sprite enemyTypeSprite;
 
-    [SerializeField] private float waitTimeForStagePass = 3f;
-    
     
     public bool isStagePassed = false;
     
@@ -45,8 +44,6 @@ public class StageCombatController : MonoBehaviour
 
     private void Update()
     {
-        print("Enemy Kill Count: " + Enemy.deathEnemyCount);
-        
         StageController();
     }
 
@@ -58,7 +55,7 @@ public class StageCombatController : MonoBehaviour
             
             isStagePassed = true;
             stage++;
-            enemyCountByStage = stage +1;
+            enemyCountByStage = stage + 1;
             Enemy.deathEnemyCount = 0;
 
             StartCoroutine(ShowStageScreen());

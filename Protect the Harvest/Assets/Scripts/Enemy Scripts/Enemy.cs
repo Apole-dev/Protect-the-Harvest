@@ -2,6 +2,7 @@
 using Interfaces;
 using Managers;
 using Player_Scripts;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,7 @@ namespace Enemy_Scripts
         public static int deathEnemyCount;
         public bool isAttacking;
         public bool isInPool;
+        public Material hitMaterial;
         #endregion
         
 
@@ -39,7 +41,8 @@ namespace Enemy_Scripts
         private PlayerHeal _playerHeal;
         
         #endregion
-
+        private SkinnedMeshRenderer[] _hitPart ;
+        private Collider _collider;
 
         private void OnEnable()
         {
@@ -49,6 +52,8 @@ namespace Enemy_Scripts
 
         private void Awake()
         {
+            _hitPart = GetComponentsInChildren<SkinnedMeshRenderer>();
+            _collider = GetComponent<Collider>();
             
             _particleCollisionDetector = FindObjectOfType<ParticleCollisionDetector>();
             _enemyMovement = FindObjectOfType<EnemyMovement>();
@@ -160,6 +165,36 @@ namespace Enemy_Scripts
             }
         }
 
+        public void PushBack(float pushAmount)
+        {
+            StartCoroutine(PushBackTimer(pushAmount));
+        }
+
+        public void ChangeColor(Color color)
+        {
+            foreach (var part in _hitPart)
+            {
+                var oldPartMaterial = part.material;
+                StartCoroutine(ResetMaterialOfEnemy(part, oldPartMaterial));
+            }
+        }
+
+        private IEnumerator ResetMaterialOfEnemy(SkinnedMeshRenderer part, Material oldPart)
+        {
+            part.material = hitMaterial;
+            yield return new WaitForSeconds(2f);
+            part.material = oldPart;
+        }
+
+        private IEnumerator PushBackTimer(float pushAmount)
+        {
+            for (float time = 0; time < 0.5f; time += Time.deltaTime)
+            {
+                enemyRigidBody.AddForce(Vector3.forward *pushAmount);
+                yield return null;
+            }
+        }
+
         public void MoveToThePool()
         {
            _enemyPooling.MoveEnemyToPool(this); 
@@ -172,7 +207,7 @@ namespace Enemy_Scripts
             isInPool = false;
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnCollisionEnter(Collision other)
         {
             if (other.gameObject.CompareTag("Player"))
             {
@@ -188,6 +223,9 @@ namespace Enemy_Scripts
                 
                 //TODO: Enemy Fence Attack Animation
             }
+
+            
+            
         }
     }
 }
