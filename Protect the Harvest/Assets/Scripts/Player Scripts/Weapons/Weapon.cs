@@ -21,7 +21,6 @@ namespace Player_Scripts.Weapons
 
             if (isHit)
             {
-                print("ishit true it needs to bewro");
                 EffectManager.Instance.PlayEnemyHitEffect(enemyShootPoint);
             }
         }

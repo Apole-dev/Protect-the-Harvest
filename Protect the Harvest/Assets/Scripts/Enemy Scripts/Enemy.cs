@@ -1,8 +1,9 @@
 ﻿using System.Collections;
+using System.Globalization;
 using Interfaces;
 using Managers;
 using Player_Scripts;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,26 +14,30 @@ namespace Enemy_Scripts
     {
         #region Enemy General Acsseser
         public static int deathEnemyCount;
+        public Material hitMaterial;
         public bool isAttacking;
         public bool isInPool;
-        public Material hitMaterial;
+
         #endregion
         
-
+        
         #region Enemy Out Line Properties
         public int damage { get; set; }
         public int health { get; set; }
         public int speed { get; set; }
         public int fireRate { get; set; }
+        public Rigidbody enemyRigidBody { get; private set; }
         #endregion
 
+        
         #region Enemy Object Acsseser
-        public Rigidbody enemyRigidBody { get; private set; }
 
         private ParticleCollisionDetector _particleCollisionDetector;
         private Slider _enemyHealthBar;
         private bool _attackTimerController = true;
-
+        private SkinnedMeshRenderer[] _hitPart ;
+        private TMP_Text _hitText;
+        
         //Scripts
         private EnemyMovement _enemyMovement;
         private EnemyAttack _enemyAttack;
@@ -41,19 +46,21 @@ namespace Enemy_Scripts
         private PlayerHeal _playerHeal;
         
         #endregion
-        private SkinnedMeshRenderer[] _hitPart ;
-        private Collider _collider;
+
+
+        #region Unity Callbacks
+        
 
         private void OnEnable()
         {
             _enemyHealthBar.value = health;
+            ChangeColor();
         }
-
-
+        
         private void Awake()
         {
             _hitPart = GetComponentsInChildren<SkinnedMeshRenderer>();
-            _collider = GetComponent<Collider>();
+            _hitText = GetComponentInChildren<TMP_Text>();
             
             _particleCollisionDetector = FindObjectOfType<ParticleCollisionDetector>();
             _enemyMovement = FindObjectOfType<EnemyMovement>();
@@ -72,6 +79,8 @@ namespace Enemy_Scripts
 
         private void Start()
         {
+            _hitText.gameObject.SetActive(false); 
+
             _enemyHealthBar.maxValue = health;
             _enemyHealthBar.value = health;
         }
@@ -86,7 +95,11 @@ namespace Enemy_Scripts
             MoveEnemy();
             RotateEnemy();
         }
+        
+        #endregion
 
+
+        #region Attack & Health
         
         /// <summary>
         /// Attack when "isAttacking" is true and if "particleCollisionDetector.isEnemyAttackHit" is true
@@ -113,7 +126,6 @@ namespace Enemy_Scripts
             }
         }
         
-
         /// <summary>
         /// Attack timer, when enemy shoots it will stop "isAttacking" after 2 seconds
         /// and enemy will be stop when enemy shooting
@@ -127,9 +139,26 @@ namespace Enemy_Scripts
             _attackTimerController = true;
         }
         
-        /// <summary>
-        /// Move enemy with rigid-body, if "isAttacking" is false
-        /// </summary>
+        public void ReduceHealth(float playerDamage)
+        {
+            //Assign health bar value
+            _enemyHealthBar.value -= playerDamage;
+            
+            //Play Effect
+            _effectManager.PlayEnemyHitEffect(transform);
+            
+            //Check if dead, if dead move to the pool and increase death count 
+            if (_enemyHealthBar.value != 0) return;
+            
+            _effectManager.PlayEnemyDeathEffect(transform);
+            deathEnemyCount++;
+            MoveToThePool();
+        }
+
+        #endregion
+        
+
+        #region Movement & Rotation
         private void MoveEnemy()
         {
             if (!isAttacking)
@@ -143,62 +172,82 @@ namespace Enemy_Scripts
             _enemyMovement.RotateEnemy(this);   
         }
         
+        #endregion
         
-        /// <summary>
-        /// Reduce health of enemy with player damage
-        /// </summary>
-        /// <param name="playerDamage"></param>
-        public void ReduceHealth(float playerDamage)
-        {
-            //Assign health bar value
-            _enemyHealthBar.value -= playerDamage;
-            
-            //Play Effect
-            _effectManager.PlayEnemyHitEffect(transform);
-            
-            //Check if dead, if dead move to the pool and increase death count 
-            if (_enemyHealthBar.value == 0)
-            {
-                _effectManager.PlayEnemyDeathEffect(transform);
-                deathEnemyCount++;
-                MoveToThePool();
-            }
-        }
+
+        #region Push Back
 
         public void PushBack(float pushAmount)
         {
+            if (!gameObject.activeSelf) return;
+            
             StartCoroutine(PushBackTimer(pushAmount));
         }
-
-        public void ChangeColor(Color color)
-        {
-            foreach (var part in _hitPart)
-            {
-                var oldPartMaterial = part.material;
-                StartCoroutine(ResetMaterialOfEnemy(part, oldPartMaterial));
-            }
-        }
-
-        private IEnumerator ResetMaterialOfEnemy(SkinnedMeshRenderer part, Material oldPart)
-        {
-            part.material = hitMaterial;
-            yield return new WaitForSeconds(2f);
-            part.material = oldPart;
-        }
-
         private IEnumerator PushBackTimer(float pushAmount)
         {
-            for (float time = 0; time < 0.5f; time += Time.deltaTime)
+            for (float time = 0; time < 0.1f; time += Time.deltaTime)
             {
                 enemyRigidBody.AddForce(Vector3.forward *pushAmount);
                 yield return null;
             }
         }
 
+        #endregion
+        
+
+        #region Hit Color Effect
+
+        public void ChangeColor()
+        {
+            foreach (var part in _hitPart)
+            {
+                if (!gameObject.activeSelf) break;
+                var oldPartMaterial = part.material;
+                StartCoroutine(ResetMaterialOfEnemy(part, oldPartMaterial));
+            }
+        }
+
+        public void HitText(float duration, float playerDamage, Color color)
+        {
+            if (!gameObject.activeSelf) return;
+            
+            _hitText.gameObject.SetActive(true);
+           _hitText.text = playerDamage.ToString(CultureInfo.InvariantCulture);
+           _hitText.color = color;
+           StartCoroutine(ReSizeText(duration));
+        }
+        
+        private IEnumerator ReSizeText(float duration )
+        {
+            float elapsedTime = 0f;
+    
+            while (elapsedTime < duration)
+            {
+                _hitText.transform.localScale = Vector3.Lerp(Vector3.one * 10, Vector3.zero, elapsedTime / duration);
+                elapsedTime += Time.deltaTime;
+
+                yield return null;
+            }
+            
+            _hitText.gameObject.SetActive(false);
+        }
+
+        private IEnumerator ResetMaterialOfEnemy(SkinnedMeshRenderer part, Material oldPart)
+        { 
+            part.material = hitMaterial;
+            yield return new WaitForSeconds(2f);
+            // ReSharper disable once Unity.InefficientPropertyAccess
+            part.material = oldPart;
+        }
+        
+        #endregion
+
+
+        #region Pooling
         public void MoveToThePool()
         {
-           _enemyPooling.MoveEnemyToPool(this); 
-           isInPool = true;
+            _enemyPooling.MoveEnemyToPool(this); 
+            isInPool = true;
         }
 
         public void ReturnFromPool()
@@ -207,6 +256,11 @@ namespace Enemy_Scripts
             isInPool = false;
         }
 
+        #endregion
+
+
+        #region Unity Functions
+        
         private void OnCollisionEnter(Collision other)
         {
             if (other.gameObject.CompareTag("Player"))
@@ -223,10 +277,8 @@ namespace Enemy_Scripts
                 
                 //TODO: Enemy Fence Attack Animation
             }
-
-            
-            
         }
+        #endregion
     }
 }
 

@@ -16,8 +16,8 @@ namespace Interfaces
         public void ReduceHealth(float playerDamage);
 
         public void PushBack(float pushAmount);
-        public void ChangeColor(Color color);
-        
+        public void ChangeColor();
+        public void HitText(float duration,float playerDamage , Color color);
         public void MoveToThePool();
         public void ReturnFromPool();
         

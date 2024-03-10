@@ -32,8 +32,6 @@ namespace Player_Scripts
         [Space]
 
         [Header("Player Attributes")]
-        [SerializeField] private EffectManager effectManager;
-
         [SerializeField] private GameObject enemyGameObject;
         [SerializeField] private GunType currentGunType;
 
@@ -59,50 +57,36 @@ namespace Player_Scripts
         private void Update()
         {
             if (ButtonPressController.isPressed && enemyGameObject != null)
-            {
                 StartCoroutine(AttackInRate());
-            }
-
+            
             if (ButtonPressController.isPressed)
-            {
                 StartCoroutine(AttackInRate());
-            }
         }
           
 
         #region Attack Section
         private IEnumerator AttackInRate()
         {
-            if (!_attackActive)
-            {
-                _attackActive = true;
-                yield return new WaitForSeconds(0.5F);
-                Attack();
-                _attackActive = false;
-            }
+            if (_attackActive) yield break;
+            
+            _attackActive = true;
+            yield return new WaitForSeconds(0.5F);
+            _attackActive = false;
+            
+            Attack();
         }
         private void Attack()
         {
-            if (_isHit)
-            {
-                PlayShootByType(transform, enemyGameObject.transform, _isHit);
-                var component = enemyGameObject.GetComponent<IEnemy>();
-                component.ReduceHealth(playerDamage: currentAttackDamage);
-                component.PushBack(80f);
-                component.ChangeColor(Color.white);
-            }
+            if (!_isHit) return;
+            
+            PlayShootByType(transform, enemyGameObject.transform, _isHit);
+            var component = enemyGameObject.GetComponent<IEnemy>();
+            component.ReduceHealth(playerDamage: currentAttackDamage);
+            component.PushBack(300f);
+            component.ChangeColor();
+            component.HitText(0.2f,currentAttackDamage,Color.yellow);
         }
         
-        /// <summary>
-        /// Plays the shoot effect
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator PlayShootEffect() //Shoot effect playing 1 more time. FIXME need to be fixed
-        {
-            yield return new WaitForSeconds(0.5f);
-            effectManager.PlayPlayerAttackEffect();
-        }
-
         #endregion
 
 
