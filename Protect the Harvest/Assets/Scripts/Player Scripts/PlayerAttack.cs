@@ -61,6 +61,12 @@ namespace Player_Scripts
             
             if (ButtonPressController.isPressed)
                 StartCoroutine(AttackInRate());
+            
+            
+            Debug.DrawLine( transform.position, transform.forward, Color.red);
+            Debug.DrawLine( transform.position, transform.forward + new Vector3(0,0,0.5f), Color.yellow);
+            Debug.DrawLine( transform.position, transform.forward + new Vector3(0.5f,0,0), Color.blue);
+            Debug.DrawLine( transform.position, transform.forward + new Vector3(0.5f,0,0), Color.green);
         }
           
 
@@ -85,6 +91,11 @@ namespace Player_Scripts
             component.PushBack(300f);
             component.ChangeColor();
             component.HitText(0.2f,currentAttackDamage,Color.yellow);
+
+            if (currentGunType == GunType.Shotgun)
+            {
+                
+            }
         }
         
         #endregion
@@ -159,9 +170,7 @@ namespace Player_Scripts
         private void PlayShootByType(Transform playerShootPoint, Transform enemyShootPoint,bool isHit)
         {
             playerInventory.selectedWeapon.playerShootPoint = playerShootPoint;
-            print("playerInventory.selectedWeapon.playerShootPoint"+playerInventory.selectedWeapon.playerShootPoint);
             playerInventory.selectedWeapon.enemyShootPoint = enemyShootPoint;
-            print("playerInventory.selectedWeapon.enemyShootPoint"+playerInventory.selectedWeapon.enemyShootPoint);
             playerInventory.selectedWeapon.Shoot(isHit);
         }
         

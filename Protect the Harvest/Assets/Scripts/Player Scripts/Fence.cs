@@ -50,6 +50,7 @@ namespace Player_Scripts
             return fenceType;
         }
 
+    
         public FenceType GetRandomFenceType()
         {
             int random = UnityEngine.Random.Range(0, 4);

@@ -25,12 +25,12 @@ namespace Player_Scripts.Weapons
             }
         }
 
-        public int GetWeaponDamage()
+        protected int GetWeaponDamage()
         {
             return damage;
         }
 
-        public int GetWeaponRange()
+        protected int GetWeaponRange()
         {
             return gunType.GetHashCode();
         }

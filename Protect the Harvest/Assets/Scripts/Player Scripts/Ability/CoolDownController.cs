@@ -36,6 +36,15 @@ namespace Player_Scripts.Ability
                 StartCoroutine(StartWeaponCoolDown());
             }
         }
+        
+        public void SetAbilityCoolDown()
+        {
+            if (!_isAbilityInCoolDown)
+            {
+                _isAbilityInCoolDown = true;
+                StartCoroutine(StartAbilityCoolDown());
+            }
+        }
 
         private IEnumerator StartWeaponCoolDown()
         {
@@ -48,7 +57,7 @@ namespace Player_Scripts.Ability
 
                 float fillAmount = 1f - (timer / weaponAttackCoolDownTime);
                 weaponButtonCoolDownImage.fillAmount = fillAmount;
-
+                
                 yield return null;
             }
 
@@ -57,16 +66,32 @@ namespace Player_Scripts.Ability
                 weaponButtonCoolDownImage.fillAmount = 1f;
                 weaponButton.interactable = true;
             }
-
-            weaponButtonCoolDownImage.fillAmount = 0f;
+            
             _isWeaponAttackInCoolDown = false;
         }
 
-
-        
-        public void SetAbilityCoolDown()
+        private IEnumerator StartAbilityCoolDown()
         {
+            float timer = 0f;
+
+            while (timer < abilityCoolDownTime)
+            {
+                abilityButton.interactable = false;
+                timer += Time.deltaTime;
+                
+                float fillAmount = 1f - (timer / abilityCoolDownTime);
+                abilityButtonCoolDownImage.fillAmount = fillAmount;
+                
+                yield return null;
+            }
+
+            if (abilityButtonCoolDownImage.fillAmount <= 0f )
+            {
+                abilityButtonCoolDownImage.fillAmount = 1f;
+                abilityButton.interactable = true;
+            }
             
+            _isAbilityInCoolDown = false;
         }
     }
 }
