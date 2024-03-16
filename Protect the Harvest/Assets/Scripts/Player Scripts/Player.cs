@@ -47,7 +47,7 @@ namespace Player_Scripts
 
             
             speed = _playerController.currentSpeed;
-            damage = _playerAttack.currentAttackDamage;
+            damage = _playerAttack.currentDamage;
             health = _playerHeal.currentHealth;
             //shield = _fence.currentShield;
             

@@ -4842,6 +4842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 304f7578fc3e891428301133d780d457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rocketLauncherData: {fileID: 11400000, guid: 9b3403b76315ecb4e8ee9ab75b5536ae, type: 2}
 --- !u!136 &3416178092724625811
 CapsuleCollider:
   m_ObjectHideFlags: 0

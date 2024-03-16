@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Scriptable_Objects
 {
     //Refactor this separate the scriptable objects by their object type. 
-    [CreateAssetMenu(fileName = "ResourceObject", menuName = "Protect the Harvest/Resource Object", order = 1)]
+    [CreateAssetMenu(fileName = "ResourceObject", menuName = "Protect the Harvest/Old Testing", order = 0)]
     public class ResourceObject :ScriptableObject
     {
         [Tooltip("Indicates to object type"),]

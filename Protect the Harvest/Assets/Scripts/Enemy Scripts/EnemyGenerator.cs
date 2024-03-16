@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 namespace Enemy_Scripts
 {
-    public class EnemyGenerator : MonoSingleton<EnemyGenerator>
+    public class EnemyGenerator : MonoBehaviour
     {
         #region Variables
         
@@ -22,14 +22,21 @@ namespace Enemy_Scripts
         public GameObject enemyClone;
         [SerializeField] private StageCombatController stageCombatController;
 
-        public int enemyCount{ get; private set; }
+        public int EnemyCount{ get; private set; }
         [SerializeField] private Material hitMaterial;
         
         #endregion
 
         #region Enemy Generation
         
-
+        public void InstantiateEnemyWithCount(int enemiesCount)
+        {
+            for (int i = 0; i < enemiesCount; i++)
+            {
+                InstantiateEnemy();
+            }
+        }
+        
         private void InstantiateEnemy()
         {
             // Positioning & Spawning
@@ -40,27 +47,18 @@ namespace Enemy_Scripts
             SetupEnemy(enemyClone);
         }
         
-        public void InstantiateEnemyWithCount(int enemiesCount)
-        {
-            for (int i = 0; i < enemiesCount; i++)
-            {
-                InstantiateEnemy();
-            }
-        }
-
-
         
         private void SetupEnemy(GameObject enemy)
         {
             
             enemy.tag = "Enemy";
-            enemy.name = "Enemy Clone " + enemyCount++;
+            enemy.name = "Enemy Clone " + EnemyCount++;
             Enemy enemyScript = enemy.AddComponent<Enemy>();
             
-            enemyScript.damage = EnemyRandomData.Instance.GetRandomDamage();
-            enemyScript.fireRate = EnemyRandomData.Instance.GetRandomFireRate();
-            enemyScript.speed = EnemyRandomData.Instance.GetRandomSpeed();
-            enemyScript.health = EnemyRandomData.Instance.GetRandomHealth();
+            enemyScript.Damage = EnemyRandomData.Instance.GetRandomDamage();
+            enemyScript.FireRate = EnemyRandomData.Instance.GetRandomFireRate();
+            enemyScript.Speed = EnemyRandomData.Instance.GetRandomSpeed();
+            enemyScript.Health = EnemyRandomData.Instance.GetRandomHealth();
             enemyScript.hitMaterial = hitMaterial;
         }
         

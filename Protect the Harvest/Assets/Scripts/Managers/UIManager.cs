@@ -15,7 +15,8 @@ namespace Managers
         [SerializeField] private GameObject loadingScreenObject;
         [SerializeField] private GameObject advertisementObject;
         [SerializeField] private GameObject playerInformationObject;
-
+        [SerializeField] private GameObject joystickObject;
+        [SerializeField] private GameObject abilityButtonsObject;
         public void ShowMessage(string message)
         {
             
@@ -43,6 +44,8 @@ namespace Managers
         
         public void ShowCardSelectionScreen(bool isCardSelection)
         {
+            joystickObject.SetActive(!isCardSelection);
+            abilityButtonsObject.SetActive(!isCardSelection);
             cardSelectionScreenObject.SetActive(isCardSelection);
         }
 

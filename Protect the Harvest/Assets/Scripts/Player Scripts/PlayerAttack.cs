@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using Enums;
 using Interfaces;
-using Managers;
-using Player_Scripts.Weapons;
 using Singleton;
 using UnityEngine;
 
@@ -14,11 +9,10 @@ namespace Player_Scripts
 {
     public class PlayerAttack : MonoSingleton<PlayerAttack>
     {
-        
-        #region Inspector Fields
-
         [Header("Scripts Accessors")]
         [SerializeField] private Inventory playerInventory;
+
+        [Space]
 
         [Header("Line Renderer Settings")]
         [Range(0.1f, 0.5f)] [SerializeField] private float startWidth = 0.3f;
@@ -32,41 +26,24 @@ namespace Player_Scripts
         [Space]
 
         [Header("Player Attributes")]
-        [SerializeField] private GameObject enemyGameObject;
-        [SerializeField] private GunType currentGunType;
-
-        #endregion
-
-        #region Private Fields
-
+        public GameObject enemyGameObject;
+        public GunType currentGunType;
+        public int currentDamage;
+        public int currentRange;
+       
+        
         private IEnemy _enemy;
-        private List<Weapon> _weaponsList;
-        public int currentAttackDamage { get; private set; }
-
-        [Header("Shoot Effect")]
-        private bool _isHit;
+        private bool _isHitEnemy;
         private bool _attackActive = false;
 
-        #endregion
-
-        private void Awake()
-        {
-            _weaponsList = FindObjectsOfType<MonoBehaviour>().OfType<Weapon>().ToList();
-        }
 
         private void Update()
         {
             if (ButtonPressController.isPressed && enemyGameObject != null)
                 StartCoroutine(AttackInRate());
-            
+
             if (ButtonPressController.isPressed)
                 StartCoroutine(AttackInRate());
-            
-            
-            Debug.DrawLine( transform.position, transform.forward, Color.red);
-            Debug.DrawLine( transform.position, transform.forward + new Vector3(0,0,0.5f), Color.yellow);
-            Debug.DrawLine( transform.position, transform.forward + new Vector3(0.5f,0,0), Color.blue);
-            Debug.DrawLine( transform.position, transform.forward + new Vector3(0.5f,0,0), Color.green);
         }
           
 
@@ -83,19 +60,14 @@ namespace Player_Scripts
         }
         private void Attack()
         {
-            if (!_isHit) return;
-            
-            PlayShootByType(transform, enemyGameObject.transform, _isHit);
+            if (!_isHitEnemy) return;
+                                    
+            PlayShootByType(transform, enemyGameObject.transform, _isHitEnemy);
             var component = enemyGameObject.GetComponent<IEnemy>();
-            component.ReduceHealth(playerDamage: currentAttackDamage);
+            component.ReduceHealth(playerDamage:currentDamage);//TODO
             component.PushBack(300f);
             component.ChangeColor();
-            component.HitText(0.2f,currentAttackDamage,Color.yellow);
-
-            if (currentGunType == GunType.Shotgun)
-            {
-                
-            }
+            component.HitText(0.2f,currentDamage,Color.yellow);
         }
         
         #endregion
@@ -117,6 +89,7 @@ namespace Player_Scripts
             
             if (Physics.Raycast(origin, transformDirection, out var hit, gunShootDistance, enemyMask))
             {
+                //REFACTOR WE DONT NEED TO ALSO ADD IF SECTION MASK ALREADY IMITATED
                 
                 //Assign the color when it hit
                 lineRenderer.material.color = hitColor;
@@ -128,14 +101,11 @@ namespace Player_Scripts
                     gunShootDistance = hit.distance;
                     
                     //Set the hit value
-                    _isHit = true;
+                    _isHitEnemy = true;
                     
                     //Set the enemy
-                    enemyGameObject = hit.collider.gameObject;
+                    enemyGameObject = hit.collider.gameObject; 
                 }
-                
-                //If the hit object is a spawn manger object then stop the attack for that object because it is a manger of the enemies
-                if(hit.collider.gameObject.CompareTag("Spawn Manger Object")) _isHit = false;
             }
             else
             {
@@ -146,34 +116,23 @@ namespace Player_Scripts
                 gunShootDistance = currentGunType.GetHashCode();
                 
                 //Reset the hit value
-                _isHit = false;
+                _isHitEnemy = false;
             }
-
-            
 
             #endregion
         }
-
-
-        /// <summary>
-        /// Assigns the gun type and damage from the Inventory Script
-        /// </summary>
-        /// <param name="gunType"></param>
-        /// <param name="damage"></param>
-        public void AssignGun(GunType gunType, int damage)
-        {
-            currentGunType = gunType;
-            gunShootDistance = (int)currentGunType;
-            currentAttackDamage = damage;
-        }
-
-        private void PlayShootByType(Transform playerShootPoint, Transform enemyShootPoint,bool isHit)
-        {
-            playerInventory.selectedWeapon.playerShootPoint = playerShootPoint;
-            playerInventory.selectedWeapon.enemyShootPoint = enemyShootPoint;
-            playerInventory.selectedWeapon.Shoot(isHit);
-        }
         
+
+        private void PlayShootByType(Transform playerShootPoint, Transform enemyShootPoint,bool isHitEnemy)
+        {
+            
+            playerInventory.selectedWeapon.PlayerShootPoint = playerShootPoint;
+            playerInventory.selectedWeapon.EnemyShootPoint = enemyShootPoint;
+            playerInventory.selectedWeapon.Shoot(isHitEnemy);
+        }
+
+
+        #region Line Renderer Methods
 
         /// <summary>
         /// Configures the line renderer
@@ -195,6 +154,6 @@ namespace Player_Scripts
             lineRenderer.SetPosition(1, end);
         }
         
-        
+        #endregion
     }
 }

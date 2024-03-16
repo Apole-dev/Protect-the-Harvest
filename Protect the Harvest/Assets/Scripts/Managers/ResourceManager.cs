@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Singleton;
 using Enums;
 using Scriptable_Objects;
+using Random = UnityEngine.Random;
 
 namespace Managers
 {

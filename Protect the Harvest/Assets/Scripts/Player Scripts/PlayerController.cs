@@ -4,7 +4,6 @@ namespace Player_Scripts
 {
     public class PlayerController : MonoBehaviour
     {
-        
         public int currentSpeed = 250;
         
         #region Serialized Fields
@@ -54,6 +53,13 @@ namespace Player_Scripts
 
         private void HandleMovement()
         {
+            //STOP MOVEMENT WHEN JOYSTICK IS NOT ACTIVE
+            if (!joystick.gameObject.activeSelf)
+            {
+                _horizontal = 0;
+                _vertical = 0;
+            }
+            
             rb.velocity = GetNewVelocity();
         }
 

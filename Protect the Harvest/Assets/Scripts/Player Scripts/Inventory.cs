@@ -1,14 +1,12 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
 using UnityEngine;
 using Managers;
-using Enums;
+using Game_Scriptable_Objects;
 using Player_Scripts.Weapons;
 using TMPro;
-
-
+using Random = UnityEngine.Random;
 
 namespace Player_Scripts
 {
@@ -30,16 +28,12 @@ namespace Player_Scripts
         [SerializeField] private TMP_Text gunRarityText;
         [SerializeField] private TMP_Text shieldRarityText;
         [SerializeField] private TMP_Text healthRarityText;
-            
-        [SerializeField] private bool isCardSelection;
 
         [Header("Attributes")]
-        public int selectedDamage;
-        public int selectedHealth;
-        public GunType gunType;
         public Weapon selectedWeapon;
-        private List<Weapon> _weaponsList;
-
+        [SerializeField] private AllScriptableData newWeapon;
+        [SerializeField] private List<Weapon> weaponsList;
+        
         [SerializeField] private Fence fence;
         [SerializeField] private PlayerHeal playerHeal;
         [SerializeField] private PlayerAttack playerAttack;
@@ -51,26 +45,16 @@ namespace Player_Scripts
 
         private void Awake()
         {
+            weaponsList = FindObjectsOfType<MonoBehaviour>().OfType<Weapon>().ToList();
+            UIManager.Instance.ShowCardSelectionScreen(true);
+            
             CheckReferences();
-            _weaponsList = FindObjectsOfType<MonoBehaviour>().OfType<Weapon>().ToList();
-        }
-
-        private void Start()
-        {
-            //If Not Gun Chosen give pistol as a first gun 
-            gunType = GunType.Pistol;
-            selectedDamage = 1;
-            
-            ResourceManager.Instance.RandomObjectGenerator();
-
+            AssignPrimaryWeaponAttributes();
+            AssignPrimaryShieldAttributes();
+            AssignPrimaryHealthAttributes();
             
         }
-
-        private void FixedUpdate()
-        {
-            UpdateCardSelectionScreen();
-        }
-
+        
         #endregion
 
         #region UI and Card Selection Logic
@@ -84,21 +68,29 @@ namespace Player_Scripts
 
             UIManager.Instance.ShowCardSelectionScreen(false);
         }
+        
 
-        private void UpdateCardSelectionScreen()
+        private void AssignPrimaryWeaponAttributes()
         {
-            UIManager.Instance.ShowCardSelectionScreen(isCardSelection);
+            selectedWeapon = weaponsList[Random.Range(0, weaponsList.Count)]; //Get Random Weapon Type From Weapon List
+            newWeapon = selectedWeapon.AssignNewWeapon(); //Selected Weapon 
+            //gunImage.sprite = newWeapon.weaponImage.sprite;
+            gunRarityText.text = newWeapon.rarity.ToString();
+            
+            //Assign Current Damage and Range
+            playerAttack.currentGunType = selectedWeapon.GunType;
+            playerAttack.currentDamage = newWeapon.damage;
+            playerAttack.currentRange = newWeapon.range;
         }
-
-        private void AssignPrimaryAttributes()
+        
+        private void AssignPrimaryHealthAttributes()
         {
-            gunImage.sprite = ResourceManager.Instance.clickWeaponResourceObject.gameObjectImage;
-            shieldImage.sprite = ResourceManager.Instance.clickShieldResourceObject.gameObjectImage;
-            healthImage.sprite = ResourceManager.Instance.clickHealthResourceObject.gameObjectImage;
-
-            gunRarityText.text = ResourceManager.Instance.clickWeaponResourceObject.rarity.ToString();
-            shieldRarityText.text = ResourceManager.Instance.clickShieldResourceObject.rarity.ToString();
-            healthRarityText.text = ResourceManager.Instance.clickHealthResourceObject.rarity.ToString();
+            
+        }
+        
+        private void AssignPrimaryShieldAttributes()
+        {
+            
         }
 
         #endregion
@@ -107,40 +99,20 @@ namespace Player_Scripts
 
         public void WeaponClick()
         {
-            //Weapon Objects Data's  
-            gunType = ResourceManager.Instance.clickWeaponResourceObject.gunType;
-            selectedDamage = ResourceManager.Instance.clickWeaponResourceObject.effectValue;
-
-            foreach (var weapon in _weaponsList)
-            {
-                if (weapon.gunType == gunType)
-                {
-                    selectedWeapon = weapon;
-                    selectedWeapon.damage = selectedDamage;
-                    print(selectedWeapon);
-                }
-            }
-            
-            playerAttack.AssignGun(gunType, selectedDamage); //Assign the gun type and damage for player attack script
-            
-            isCardSelection = false; //Show the card selection screen
-            
-            ResourceManager.Instance.RandomObjectGenerator(); //Reset the objects and generate new ones
-        }
-
-        public void ShieldClick()
-        {
-            isCardSelection = false;
-            fence.ChangeFence(fence.GetRandomFenceType());
-            ResourceManager.Instance.RandomObjectGenerator();
+            UIManager.Instance.ShowCardSelectionScreen(false); //Hide the card selection screen
+            AssignPrimaryWeaponAttributes();
         }
 
         public void HealthClick()
         {
-            selectedHealth = ResourceManager.Instance.clickHealthResourceObject.effectValue;
-            playerHeal.Heal(selectedHealth);
-            isCardSelection = false;
-            ResourceManager.Instance.RandomObjectGenerator();
+            UIManager.Instance.ShowCardSelectionScreen(false); //Hide the card selection screen
+            AssignPrimaryHealthAttributes();
+        }
+
+        public void ShieldClick()
+        {
+            UIManager.Instance.ShowCardSelectionScreen(false); //Hide the card selection screen
+            AssignPrimaryShieldAttributes();
         }
 
         #endregion

@@ -1,6 +1,7 @@
 ﻿using System;
 using Managers;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Player_Scripts
 {
@@ -8,12 +9,14 @@ namespace Player_Scripts
     {
         [Header("Fence Properties")]
         public FenceType fenceType;
+        [SerializeField] private Slider fenceShieldSlider;
+        
         [SerializeField] private GameObject easyFence;
         [SerializeField] private GameObject mediumFence;
         [SerializeField] private GameObject hardFence;
         [SerializeField] private GameObject impossibleFence;
         [SerializeField] private GameObject brokenFence;
-        public int currentShield { get; private set; }
+        public float currentShield { get; private set; }
         
 
         private void Awake()
@@ -24,23 +27,29 @@ namespace Player_Scripts
                 FenceType.Medium => FenceType.Medium.GetHashCode(),
                 FenceType.Hard => FenceType.Hard.GetHashCode(),
                 FenceType.Impossible => FenceType.Impossible.GetHashCode(),
-                _ => 10
+                _ => 1000
             };
+        }
+
+        private void Update()
+        {
+            fenceShieldSlider.value = currentShield;
         }
 
 
         public void ReduceShield(int damage)
         {
-            currentShield -= damage;
+            fenceShieldSlider.gameObject.SetActive(true);
+            currentShield -= damage*Time.deltaTime;
             if (currentShield <= 0)
             {
                 gameObject.SetActive(false);
-                UIManager.Instance.ShowShieldBrokeScreen(true);
-                AudioManager.Instance.PlayShieldBrokeSound();
+                // UIManager.Instance.ShowShieldBrokeScreen(true);
+                // AudioManager.Instance.PlayShieldBrokeSound();
             }
         }
 
-        public int GetCurrentDamage()
+        public float GetCurrentDamage()
         {
             return currentShield;
         }

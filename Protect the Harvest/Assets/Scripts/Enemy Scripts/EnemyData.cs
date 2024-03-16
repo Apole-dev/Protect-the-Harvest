@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Enemy_Scripts
 {
-    [CreateAssetMenu(fileName = "EnemyData", menuName = "ScriptableObjects/EnemyData", order = 1)]
+    [CreateAssetMenu(fileName = "EnemyData", menuName = "Protect the Harvest/Enemy/EnemyData", order = 1)]
     public class EnemyData : ScriptableObject
     {
         [Header("Health Stats")]

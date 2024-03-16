@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
 using Singleton;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-public class RandomProbability:MonoSingleton<RandomProbability>
+public class RandomProbability:MonoBehaviour
 {
     /// <summary>
     /// Given an array of probabilities and an array of numbers, returns the index of the number with the probability
@@ -13,7 +14,7 @@ public class RandomProbability:MonoSingleton<RandomProbability>
     /// <param name="numbers"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public float WeightedProbability(float[] probabilities, float[] numbers)    
+    public static float WeightedProbability(float[] probabilities, float[] numbers)    
     {
         
         if (numbers.Length != probabilities.Length)
@@ -42,7 +43,7 @@ public class RandomProbability:MonoSingleton<RandomProbability>
     /// <param name="numbers"></param>
     /// <returns> </returns>
     /// <exception cref="ArgumentException"></exception>
-    public int WeightedProbability(int[] probabilities, int[] numbers)    
+    public static int WeightedProbability(int[] probabilities, int[] numbers)    
     {
         if (numbers.Length != probabilities.Length)
             throw new ArgumentException("Probabilities and numbers must have the same length.");

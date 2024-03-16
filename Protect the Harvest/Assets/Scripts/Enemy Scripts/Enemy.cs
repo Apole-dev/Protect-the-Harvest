@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Globalization;
 using Interfaces;
 using Managers;
@@ -17,16 +18,15 @@ namespace Enemy_Scripts
         public Material hitMaterial;
         public bool isAttacking;
         public bool isInPool;
-
         #endregion
         
         
         #region Enemy Out Line Properties
-        public int damage { get; set; }
-        public int health { get; set; }
-        public int speed { get; set; }
-        public int fireRate { get; set; }
-        public Rigidbody enemyRigidBody { get; private set; }
+        public int Damage { get; set; }
+        public int Health { get; set; }
+        public int Speed { get; set; }
+        public int FireRate { get; set; }
+        public Rigidbody EnemyRigidBody { get; private set; }
         #endregion
 
         
@@ -37,6 +37,7 @@ namespace Enemy_Scripts
         private bool _attackTimerController = true;
         private SkinnedMeshRenderer[] _hitPart ;
         private TMP_Text _hitText;
+        private bool _isCollidingWithFence;
         
         //Scripts
         private EnemyMovement _enemyMovement;
@@ -44,6 +45,7 @@ namespace Enemy_Scripts
         private EffectManager _effectManager;
         private EnemyPooling _enemyPooling;
         private PlayerHeal _playerHeal;
+        private Fence _fence;
         
         #endregion
 
@@ -53,7 +55,7 @@ namespace Enemy_Scripts
 
         private void OnEnable()
         {
-            _enemyHealthBar.value = health;
+            _enemyHealthBar.value = Health;
             ChangeColor();
         }
         
@@ -68,8 +70,9 @@ namespace Enemy_Scripts
             _enemyAttack = FindObjectOfType<EnemyAttack>();
             _enemyPooling = FindObjectOfType<EnemyPooling>();
             _playerHeal = FindObjectOfType<PlayerHeal>();
+            _fence = FindObjectOfType<Fence>();
             
-            enemyRigidBody = GetComponent<Rigidbody>();
+            EnemyRigidBody = GetComponent<Rigidbody>();
             _enemyHealthBar = GetComponentInChildren<Slider>();
          
             
@@ -81,8 +84,8 @@ namespace Enemy_Scripts
         {
             _hitText.gameObject.SetActive(false); 
 
-            _enemyHealthBar.maxValue = health;
-            _enemyHealthBar.value = health;
+            _enemyHealthBar.maxValue = Health;
+            _enemyHealthBar.value = Health;
         }
         
         private void Update()
@@ -121,7 +124,7 @@ namespace Enemy_Scripts
             }       
             if (_particleCollisionDetector.isEnemyAttackHit)
             {
-                _enemyAttack.Attack(damage);
+                _enemyAttack.Attack(Damage);
                 _particleCollisionDetector.isEnemyAttackHit = false;
             }
         }
@@ -134,10 +137,17 @@ namespace Enemy_Scripts
         private IEnumerator AttackTimer()
         {
             isAttacking = true;
-            yield return new WaitForSeconds(fireRate);
+            yield return new WaitForSeconds(FireRate);
             isAttacking = false;
             _attackTimerController = true;
         }
+
+        private void TestFunc()
+        {
+            _fence.ReduceShield(Damage);
+        }
+        
+        
         
         public void ReduceHealth(float playerDamage)
         {
@@ -154,6 +164,7 @@ namespace Enemy_Scripts
             deathEnemyCount++;
             MoveToThePool();
         }
+        
 
         #endregion
         
@@ -187,7 +198,7 @@ namespace Enemy_Scripts
         {
             for (float time = 0; time < 0.1f; time += Time.deltaTime)
             {
-                enemyRigidBody.AddForce(Vector3.forward *pushAmount);
+                EnemyRigidBody.AddForce(Vector3.forward *pushAmount);
                 yield return null;
             }
         }
@@ -216,7 +227,7 @@ namespace Enemy_Scripts
            _hitText.color = color;
            StartCoroutine(ReSizeText(duration));
         }
-        
+
         private IEnumerator ReSizeText(float duration )
         {
             float elapsedTime = 0f;
@@ -261,12 +272,12 @@ namespace Enemy_Scripts
 
         #region Unity Functions
         
-        private void OnCollisionEnter(Collision other)
+        private void OnCollisionStay(Collision other)
         {
             if (other.gameObject.CompareTag("Player"))
             {
                 //TODO: Reduce Player Health
-                _playerHeal.ReduceHealth(damage-1);
+                _playerHeal.ReduceHealth(Damage-1);
                 
                 //TODO: Enemy Player Attack Animation
             }
@@ -274,10 +285,20 @@ namespace Enemy_Scripts
             if (other.gameObject.CompareTag("Fence"))
             {
                 //TODO: Reduce Fence Shield
-                
+                _isCollidingWithFence = true;
+                if (_isCollidingWithFence)
+                {
+                    InvokeRepeating(nameof(TestFunc), 0f, 1f);
+                }
                 //TODO: Enemy Fence Attack Animation
             }
         }
+
+        private void OnCollisionExit(Collision other)
+        {
+            _isCollidingWithFence = false;
+        }
+
         #endregion
     }
 }

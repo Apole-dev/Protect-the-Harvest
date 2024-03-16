@@ -12,12 +12,12 @@ namespace Enemy_Scripts
         public void MoveEnemy(Enemy enemy)
         {
             Vector3 direction = (playerGameObject.transform.position - enemy.transform.position).normalized;
-            enemy.enemyRigidBody.velocity = direction * (Time.fixedDeltaTime * enemy.speed * 10f);
+            enemy.EnemyRigidBody.velocity = direction * (Time.fixedDeltaTime * enemy.Speed * 10f);
 
-            if (Mathf.Abs(enemy.enemyRigidBody.velocity.z) <= 0.15f)
+            if (Mathf.Abs(enemy.EnemyRigidBody.velocity.z) <= 0.15f)
             {
                 print("added force due to zero velocity");
-                enemy.enemyRigidBody.AddForce(enemy.enemyRigidBody.velocity * 10f, ForceMode.Impulse);
+                enemy.EnemyRigidBody.AddForce(enemy.EnemyRigidBody.velocity * 10f, ForceMode.Impulse);
             }
         }
         public void RotateEnemy(Enemy enemy)

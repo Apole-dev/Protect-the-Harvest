@@ -9,7 +9,8 @@ using UnityEngine.UI;
 
 public class StageCombatController : MonoBehaviour
 {
-
+    public static event Action OnStagePassed;
+    
     [Header("Stage Details")]
     [SerializeField] private int stage;
     [SerializeField] private int enemyCountByStage;
@@ -22,10 +23,11 @@ public class StageCombatController : MonoBehaviour
     [SerializeField] private Image enemyImage;
     [SerializeField] private Sprite enemyTypeSprite;
 
+    [SerializeField] private EnemyGenerator enemyGenerator;
+
     
     public bool isStagePassed = false;
     
-
     private void Awake()
     {
         #region Default Values
@@ -39,7 +41,7 @@ public class StageCombatController : MonoBehaviour
     private void Start()
     {
         // First Stage
-        EnemyGenerator.Instance.InstantiateEnemyWithCount(2);
+        enemyGenerator.InstantiateEnemyWithCount(2);
     }
 
     private void Update()
@@ -57,26 +59,25 @@ public class StageCombatController : MonoBehaviour
             stage++;
             enemyCountByStage = stage + 1;
             Enemy.deathEnemyCount = 0;
-
             StartCoroutine(ShowStageScreen());
             StartCoroutine(GenerateNewStageEnemies(enemyCountByStage));
         }
         else
         {
-            print("Is stage can not be passed");
+            print("Stage can not be passed");
             isStagePassed = false;
         }
     }
     
-    private IEnumerator GenerateNewStageEnemies(int enemyCountByStage)
+    private IEnumerator GenerateNewStageEnemies(int enemyCount)
     {
-        if(enemyCountByStage == 0) throw new ArgumentException("enemyCountByStage can't be 0");
+        if(enemyCount == 0) throw new ArgumentException("enemyCount can't be 0");
         
         yield return new WaitForSeconds(waitTimeForStagePass + 4f);
 
         var enemyPooling = EnemyPooling.Instance;
         List<Enemy> enemyScriptsInPool = enemyPooling.enemiesScriptInPool;
-        int difference = enemyCountByStage - enemyScriptsInPool.Count;
+        int difference = enemyCount - enemyScriptsInPool.Count;
         
         print("Enemy Script count in pool" +enemyScriptsInPool.Count);
 
@@ -85,7 +86,7 @@ public class StageCombatController : MonoBehaviour
             EnemyPooling.Instance.ReturnEnemyFromPool(enemyScriptsInPool[i]);
         }
         
-        EnemyGenerator.Instance.InstantiateEnemyWithCount(difference);
+        enemyGenerator.InstantiateEnemyWithCount(difference);
         
     }
     
@@ -97,6 +98,7 @@ public class StageCombatController : MonoBehaviour
         UIManager.Instance.ShowVictoryScreen(true);
         yield return new WaitForSeconds(waitTimeForStagePass);
         UIManager.Instance.ShowVictoryScreen(false);
+        UIManager.Instance.ShowCardSelectionScreen(true);
     }
     
     private void AssignDetailsOfStage()
