@@ -5,6 +5,7 @@ using Interfaces;
 using Managers;
 using Player_Scripts;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,6 +39,7 @@ namespace Enemy_Scripts
         private SkinnedMeshRenderer[] _hitPart ;
         private TMP_Text _hitText;
         private bool _isCollidingWithFence;
+        private bool _isHittingPlayer;
         
         //Scripts
         private EnemyMovement _enemyMovement;
@@ -57,6 +59,10 @@ namespace Enemy_Scripts
         {
             _enemyHealthBar.value = Health;
             ChangeColor();
+        }
+        private void OnDisable()
+        {
+            _isCollidingWithFence = false;
         }
         
         private void Awake()
@@ -91,6 +97,7 @@ namespace Enemy_Scripts
         private void Update()
         {
             Attack();
+            print(_isCollidingWithFence);
         }
 
         private void FixedUpdate()
@@ -141,12 +148,6 @@ namespace Enemy_Scripts
             isAttacking = false;
             _attackTimerController = true;
         }
-
-        private void TestFunc()
-        {
-            _fence.ReduceShield(Damage);
-        }
-        
         
         
         public void ReduceHealth(float playerDamage)
@@ -163,6 +164,29 @@ namespace Enemy_Scripts
             _effectManager.PlayEnemyDeathEffect(transform);
             deathEnemyCount++;
             MoveToThePool();
+        }
+
+        private void AttackFence()
+        {
+            _fence.ReduceShield(Damage);
+        }
+        
+        private IEnumerator AttackFenceTimer()
+        {
+            while (_isCollidingWithFence)
+            {
+                AttackFence();
+                yield return new WaitForSeconds(2f);
+            }
+        }
+        
+        private IEnumerator ReducePlayerHealth()
+        {
+            while (_isHittingPlayer)
+            {
+                _playerHeal.ReduceHealth(Damage* Time.deltaTime);
+                yield return new WaitForSeconds(10f);
+            }
         }
         
 
@@ -277,7 +301,11 @@ namespace Enemy_Scripts
             if (other.gameObject.CompareTag("Player"))
             {
                 //TODO: Reduce Player Health
-                _playerHeal.ReduceHealth(Damage-1);
+                _isHittingPlayer = true;
+                if (_isHittingPlayer)
+                {
+                    StartCoroutine(ReducePlayerHealth());
+                }
                 
                 //TODO: Enemy Player Attack Animation
             }
@@ -288,7 +316,7 @@ namespace Enemy_Scripts
                 _isCollidingWithFence = true;
                 if (_isCollidingWithFence)
                 {
-                    InvokeRepeating(nameof(TestFunc), 0f, 1f);
+                    StartCoroutine(AttackFenceTimer());
                 }
                 //TODO: Enemy Fence Attack Animation
             }
@@ -296,7 +324,17 @@ namespace Enemy_Scripts
 
         private void OnCollisionExit(Collision other)
         {
-            _isCollidingWithFence = false;
+            if (other.gameObject.CompareTag("Fence"))
+            {
+                _isCollidingWithFence = false;
+                StopCoroutine(AttackFenceTimer());
+            }
+
+            if (other.gameObject.CompareTag("Player"))
+            {
+                _isHittingPlayer = false;
+                StopCoroutine(ReducePlayerHealth());
+            }
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Enums;
 using Interfaces;
 using Singleton;
@@ -44,6 +45,8 @@ namespace Player_Scripts
 
             if (ButtonPressController.isPressed)
                 StartCoroutine(AttackInRate());
+            
+            
         }
           
 
@@ -60,19 +63,22 @@ namespace Player_Scripts
         }
         private void Attack()
         {
-            if (!_isHitEnemy) return;
-                                    
-            PlayShootByType(transform, enemyGameObject.transform, _isHitEnemy);
-            var component = enemyGameObject.GetComponent<IEnemy>();
-            component.ReduceHealth(playerDamage:currentDamage);//TODO
-            component.PushBack(300f);
-            component.ChangeColor();
-            component.HitText(0.2f,currentDamage,Color.yellow);
+            // if (!_isHitEnemy) return;
+            //                         
+            // PlayShootByType(transform, enemyGameObject.transform, _isHitEnemy);
+            // var component = enemyGameObject.GetComponent<IEnemy>();
+            // component.ReduceHealth(playerDamage:currentDamage);//TODO
+            // component.PushBack(300f);
+            // component.ChangeColor();
+            // component.HitText(0.2f,currentDamage,Color.yellow);
+            
+            
+            PlayShootByType(transform,transform, _isHitEnemy);
         }
         
         #endregion
 
-
+        
 
         public void DrawWeaponShootLine()
         {
@@ -86,7 +92,7 @@ namespace Player_Scripts
             #endregion
             
             #region Raycast
-            
+            /*
             if (Physics.Raycast(origin, transformDirection, out var hit, gunShootDistance, enemyMask))
             {
                 //REFACTOR WE DONT NEED TO ALSO ADD IF SECTION MASK ALREADY IMITATED
@@ -118,7 +124,7 @@ namespace Player_Scripts
                 //Reset the hit value
                 _isHitEnemy = false;
             }
-
+            */
             #endregion
         }
         
@@ -129,8 +135,14 @@ namespace Player_Scripts
             playerInventory.selectedWeapon.PlayerShootPoint = playerShootPoint;
             playerInventory.selectedWeapon.EnemyShootPoint = enemyShootPoint;
             playerInventory.selectedWeapon.Shoot(isHitEnemy);
+            print("PlayShootByType called");
         }
 
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawSphere(transform.position, 1f);
+        }
 
         #region Line Renderer Methods
 

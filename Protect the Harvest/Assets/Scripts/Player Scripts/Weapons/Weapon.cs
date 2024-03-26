@@ -1,6 +1,7 @@
 ﻿using System;
 using Enums;
 using Game_Scriptable_Objects;
+using Interfaces;
 using Managers;
 using UnityEngine;
 
@@ -17,10 +18,14 @@ namespace Player_Scripts.Weapons
         
         public abstract Transform PlayerShootPoint { get; set; }
         public abstract Transform EnemyShootPoint { get; set; }
+
+        public GameObject hitTestObject;
         
+        public abstract ObjectsScriptableData AssignNewWeapon();
+        
+
         public virtual void Shoot(bool isHit)
         {
-            print(GunType);
             EffectManager.Instance.PlayPlayerEffect(EffectType,PlayerShootPoint);
             AudioManager.Instance.PlayGunSound(GunType);
 
@@ -28,12 +33,19 @@ namespace Player_Scripts.Weapons
             {
                 EffectManager.Instance.PlayEnemyHitEffect(EnemyShootPoint);
             }
+            HitController();
         }
-
-        public virtual AllScriptableData AssignNewWeapon()
+        public virtual void HitController()
         {
-            return null;
+            LayerMask enemyLayerMask = LayerMask.GetMask("Enemy");
+            hitTestObject = GameObject.FindWithTag("Hit Cube");
+            hitTestObject.transform.position = PlayerShootPoint.position+PlayerShootPoint.forward*Range;
+            if (Physics.Raycast(PlayerShootPoint.position, PlayerShootPoint.forward,out var hit, Range, enemyLayerMask))
+            {
+               hit.transform.gameObject.GetComponent<IEnemy>().ReduceHealth(Damage);
+            }
         }
+        
         protected int GetWeaponDamage()
         {
             return Damage;
@@ -43,7 +55,13 @@ namespace Player_Scripts.Weapons
         {
             return GunType.GetHashCode();
         }
-        
-        
+
+        protected virtual void OnParticleCollision(GameObject other)
+        {
+            if (other.gameObject.CompareTag("Enemy"))
+            {
+                other.GetComponent<IEnemy>().ReduceHealth(Damage);
+            }
+        }
     }
 }

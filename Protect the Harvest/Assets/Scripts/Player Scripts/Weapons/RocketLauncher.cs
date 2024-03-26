@@ -2,16 +2,15 @@ using System;
 using System.Collections.Generic;
 using Enums;
 using Game_Scriptable_Objects;
+using Game_Scriptable_Objects.Weapon;
 using Interfaces;
 using UnityEngine;
-
 
 namespace Player_Scripts.Weapons
 {
     public class RocketLauncher : Weapon
     {
         [SerializeField] private List<RocketLauncherScriptableObject> rocketLaunchers;
-        
         #region Abstracts
         public override int Damage { get; protected set; } = 5; //Normal value
         public override int Range { get; protected set; } = 3; //Normal value
@@ -22,7 +21,6 @@ namespace Player_Scripts.Weapons
 
         #endregion
         
-        
 
         private void Awake()
         {
@@ -30,31 +28,44 @@ namespace Player_Scripts.Weapons
             EffectType = EffectType.PlayerRocketLauncherAttackEffect;
         }
 
-        public override AllScriptableData AssignNewWeapon()
+        public override ObjectsScriptableData AssignNewWeapon()
         {
             int index = UnityEngine.Random.Range(0, rocketLaunchers.Count);
-            Damage = rocketLaunchers[index].damage;
+            Damage = rocketLaunchers[index].effectValue;
             Range = rocketLaunchers[index].range;
             
             return rocketLaunchers[index];
         }
 
-        private void OnTriggerEnter(Collider other)
+        public override void HitController()
         {
-            if (other.CompareTag("Enemy"))
-                other.GetComponent<IEnemy>().ReduceHealth(Damage);
-        }
-        public Rarity GetWeightRarity()
-        {
-            int weightRarity = RandomProbability.WeightedProbability(new[] { 50, 10, 5 }, new[] { 1, 2, 3 });
-            foreach (Rarity rarity in Enum.GetValues(typeof(Rarity)))
+            Vector3 hitPosition = PlayerShootPoint.position + PlayerShootPoint.forward * Range;
+            hitTestObject.transform.position = hitPosition;
+            var hitObjects = Physics.OverlapSphere(hitPosition, 1f, LayerMask.GetMask("Enemy")); 
+            print(hitObjects.Length);
+            if (hitObjects.Length > 6) return; 
+          
+            foreach (var coll in hitObjects)
             {
-                if ((int)rarity == weightRarity)
-                {
-                    return rarity;
-                }
+                print(coll.name);
+                coll.transform.gameObject.GetComponent<IEnemy>().ReduceHealth(Damage);
             }
-            return Rarity.Common;
+        }
+
+        protected override void OnParticleCollision(GameObject other)
+        {
+            if (other.gameObject.CompareTag("Enemy"))
+            {
+                var hitObjects = Physics.OverlapSphere(other.transform.position, 1f, LayerMask.GetMask("Enemy")); 
+                print(hitObjects.Length);
+                if (hitObjects.Length > 6) return; 
+          
+                foreach (var coll in hitObjects)
+                {
+                    print(coll.name);
+                    coll.transform.gameObject.GetComponent<IEnemy>().ReduceHealth(Damage);
+                }  
+            }
         }
     }
 }

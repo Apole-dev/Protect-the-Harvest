@@ -6,6 +6,7 @@ using Managers;
 using Game_Scriptable_Objects;
 using Player_Scripts.Weapons;
 using TMPro;
+using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 
 namespace Player_Scripts
@@ -15,23 +16,28 @@ namespace Player_Scripts
         #region Serialized Fields
 
         [Header("UI Elements")]
-        [SerializeField] private Image gunImage;
-        [SerializeField] private Image shieldImage;
-        [SerializeField] private Image healthImage;
-        [Space]
-        
         [SerializeField] private Button gunButton;
-        [SerializeField] private Button shieldButton;
-        [SerializeField] private Button healthButton;
+        [SerializeField] private TMP_Text gunValueText;
+        [SerializeField] private Image gunImage;
+        [SerializeField] private TMP_Text gunRarityText;
+        
         [Space]
         
-        [SerializeField] private TMP_Text gunRarityText;
-        [SerializeField] private TMP_Text shieldRarityText;
+        [SerializeField] private Button healthButton;
+        [SerializeField] private TMP_Text healthValueText;
+        [SerializeField] private Image healthImage;
         [SerializeField] private TMP_Text healthRarityText;
+
+        [Space]
+        
+        [SerializeField] private Button shieldButton;
+        [SerializeField] private TMP_Text shieldValueText;
+        [SerializeField] private Image shieldImage;
+        [SerializeField] private TMP_Text shieldRarityText;
 
         [Header("Attributes")]
         public Weapon selectedWeapon;
-        [SerializeField] private AllScriptableData newWeapon;
+        [SerializeField] private ObjectsScriptableData newWeapon;
         [SerializeField] private List<Weapon> weaponsList;
         
         [SerializeField] private Fence fence;
@@ -79,17 +85,30 @@ namespace Player_Scripts
             
             //Assign Current Damage and Range
             playerAttack.currentGunType = selectedWeapon.GunType;
-            playerAttack.currentDamage = newWeapon.damage;
+            playerAttack.currentDamage = newWeapon.effectValue;
             playerAttack.currentRange = newWeapon.range;
         }
         
         private void AssignPrimaryHealthAttributes()
         {
-            
+           var healthObject = playerHeal.GetRandomHealthObject();
+           //healthImage.sprite = healthObject.healthObjectSprite; //todo
+           healthValueText.text = healthObject.effectValue.ToString();
+           healthRarityText.text = healthObject.rarity.ToString();
+
+           playerHeal.Heal(healthObject.effectValue);
+
         }
         
         private void AssignPrimaryShieldAttributes()
         {
+            var shieldObject = fence.GetRandomShield();
+            fence.IncreaseShield(shieldObject.effectValue);
+            
+            shieldValueText.text = shieldObject.effectValue.ToString();
+            shieldRarityText.text = shieldObject.rarity.ToString();
+            
+            //shieldImage.sprite = shieldObject.shieldObjectSprite;
             
         }
 

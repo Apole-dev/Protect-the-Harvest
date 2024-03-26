@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RocketLauncher
   m_EditorClassIdentifier: 
   rarity: 4
-  damage: 8
+  effectValue: 17
   range: 4
-  weaponPrefab: {fileID: 0}
-  weaponImage: {fileID: 0}
+  objectPrefab: {fileID: 0}
+  objectImage: {fileID: 0}

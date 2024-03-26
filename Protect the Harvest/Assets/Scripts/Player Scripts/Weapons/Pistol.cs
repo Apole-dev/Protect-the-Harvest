@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Enums;
 using Game_Scriptable_Objects;
+using Game_Scriptable_Objects.Weapon;
 using UnityEngine;
 
 namespace Player_Scripts.Weapons
@@ -21,10 +22,10 @@ namespace Player_Scripts.Weapons
             EffectType = EffectType.PlayerPistolAttackEffect;
         }
         
-        public override AllScriptableData AssignNewWeapon()
+        public override ObjectsScriptableData AssignNewWeapon()
         {
             int index = Random.Range(0, pistolObjects.Count);
-            Damage = pistolObjects[index].damage;
+            Damage = pistolObjects[index].effectValue;
             Range = pistolObjects[index].range;
             
             return pistolObjects[index];

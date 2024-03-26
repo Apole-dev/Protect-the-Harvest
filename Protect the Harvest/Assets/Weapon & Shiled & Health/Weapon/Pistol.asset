@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: 
   rarity: 2
-  damage: 8
+  effectValue: 3
   range: 12
-  weaponPrefab: {fileID: 0}
-  weaponImage: {fileID: 0}
+  objectPrefab: {fileID: 0}
+  objectImage: {fileID: 0}

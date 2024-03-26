@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Shotgun
   m_EditorClassIdentifier: 
   rarity: 1
-  damage: 31
+  effectValue: 35
   range: 4
-  weaponPrefab: {fileID: 0}
-  weaponImage: {fileID: 0}
+  objectPrefab: {fileID: 0}
+  objectImage: {fileID: 0}
+  hitRadius: 1

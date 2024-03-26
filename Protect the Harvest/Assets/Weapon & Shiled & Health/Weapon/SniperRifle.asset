@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SniperRifle
   m_EditorClassIdentifier: 
   rarity: 1
-  damage: 13
+  effectValue: 13
   range: 27
-  weaponPrefab: {fileID: 0}
-  weaponImage: {fileID: 0}
+  objectPrefab: {fileID: 0}
+  objectImage: {fileID: 0}

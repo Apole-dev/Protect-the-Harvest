@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Globalization;
+using TMPro;
 using UnityEngine;
 
 
@@ -6,7 +7,7 @@ namespace Player_Scripts
 {
     public class Player : MonoBehaviour
     {
-        [SerializeField] private int health;
+        [SerializeField] private float health;
         [SerializeField] private int damage;
         [SerializeField] private int shield;
         [SerializeField] private int speed;
@@ -44,14 +45,15 @@ namespace Player_Scripts
         private void AssignPlayerInformation()
         {
             if (!_stageCombatController.isStagePassed) return;
-
+            
+            
             
             speed = _playerController.currentSpeed;
             damage = _playerAttack.currentDamage;
-            health = _playerHeal.currentHealth;
+            health = _playerHeal.CurrentHealth;
             //shield = _fence.currentShield;
             
-            healthText.text = health.ToString();
+            healthText.text = health.ToString(CultureInfo.InvariantCulture);
             damageText.text = damage.ToString();
             shieldText.text = shield.ToString();
         }

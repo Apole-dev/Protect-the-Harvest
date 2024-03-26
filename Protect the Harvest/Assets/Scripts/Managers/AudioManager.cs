@@ -182,15 +182,17 @@ namespace Managers
         }
 
         // Method to play the health recharge sound.
-        private void PlayHealthRechargeSound()
+        public void PlayHealthRechargeSound()
         {
-            AudioSource.PlayClipAtPoint(healthRecharge, transform.position);
+            //AudioSource.PlayClipAtPoint(healthRecharge, transform.position);
+            print("PlayHealthRechargeSound");
         }
         
 
         public void PlayShieldBrokeSound()
         {
             // Implementation to play specific sound
+            print("Shield Broken sound");
         }
         
         public void StopSound(string soundName)
@@ -202,5 +204,6 @@ namespace Managers
         {
             // Implementation to adjust volume
         }
+        
     }
 }

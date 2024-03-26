@@ -7,6 +7,7 @@
         EnemyAttackEffect,
         PlayerDeathEffect,
         PlayerHitEffect,
+        PlayerHealEffect,
         
         PlayerRocketLauncherAttackEffect,
         PlayerPistolAttackEffect,

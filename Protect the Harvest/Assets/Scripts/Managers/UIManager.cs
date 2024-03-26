@@ -71,7 +71,8 @@ namespace Managers
 
         public void ShowShieldBrokeScreen(bool isShieldBroke)
         {
-            shieldBrokeScreenObject.SetActive(isShieldBroke);
+            //shieldBrokeScreenObject.SetActive(isShieldBroke);
+            print("Shield Broke");
         }
     }
 }

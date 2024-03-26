@@ -16,6 +16,7 @@ namespace Managers
         [SerializeField] private ParticleSystem playerHitEffect;
         [SerializeField] private ParticleSystem playerDeathEffect;
         [SerializeField] private ParticleSystem playerAttackEffect;
+        [SerializeField] private ParticleSystem playerHealEffect;
 
         [Header("Weapon Attack Effects")]
         [SerializeField] private ParticleSystem pistolAttackEffect;
@@ -30,6 +31,9 @@ namespace Managers
         {
             switch (effectType)
             {
+                case EffectType.PlayerHealEffect:
+                    PlayPlayerHealEffect(playerEffectTransform);
+                    break;
                 case EffectType.PlayerDeathEffect:
                     PlayPlayerDeathEffect(playerEffectTransform);
                     break;
@@ -61,7 +65,15 @@ namespace Managers
                     throw new ArgumentOutOfRangeException(nameof(effectType), effectType, null);
             }
         }
-        
+
+        private void PlayPlayerHealEffect(Transform playerEffectTransform)
+        {
+            // playerHealEffect.transform.position = playerEffectTransform.position;
+            // playerHealEffect.Play();
+            
+            print("player heal effect");
+        }
+
         public void PlayEnemyEffect(EffectType effectType, Transform enemyEffectTransform)
         {
             switch (effectType)

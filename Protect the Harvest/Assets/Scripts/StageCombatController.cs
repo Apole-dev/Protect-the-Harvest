@@ -1,109 +1,84 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using Enemy_Scripts;
-using Managers;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Serialization;
 
 public class StageCombatController : MonoBehaviour
 {
-    public static event Action OnStagePassed;
     
-    [Header("Stage Details")]
-    [SerializeField] private int stage;
-    [SerializeField] private int enemyCountByStage;
-
-    [SerializeField] private TMP_Text stageNumberText;
-    [SerializeField] private float waitTimeForStagePass = 3f;
-    [Space]
-    
-    [Header("Enemy Details")]
-    [SerializeField] private Image enemyImage;
-    [SerializeField] private Sprite enemyTypeSprite;
-
     [SerializeField] private EnemyGenerator enemyGenerator;
+    [SerializeField] private EnemyPooling enemyPooling;
+    
+    
+    [SerializeField] private int firstStageEnemyCount;
+    [SerializeField] private int enemyCountIncrement;
+    [SerializeField] private int stageCount;
+    [SerializeField] private float stageTimer;
+    public int CurrentStage { get; private set; }
+    public int CurrentEnemyCount { get; private set; }
+    
+    
+    
+    [SerializeField] private TMP_Text enemyCountText;
+    [SerializeField] private TMP_Text enemyType;
 
+
+    public bool isStagePassed;
     
-    public bool isStagePassed = false;
-    
+
     private void Awake()
     {
-        #region Default Values
-        
-        stage = 1; 
-        enemyCountByStage = 2;
-        
-        #endregion
-    }
-    
-    private void Start()
-    {
-        // First Stage
-        enemyGenerator.InstantiateEnemyWithCount(2);
+        CurrentEnemyCount = firstStageEnemyCount;
+        enemyGenerator.InstantiateEnemyWithCount(firstStageEnemyCount);
     }
 
     private void Update()
     {
-        StageController();
+        ControlStage(); 
     }
 
-    private void StageController()
+    //Control Stage Settings
+    private void ControlStage()
     {
-        if (Enemy.deathEnemyCount >= enemyCountByStage)
+        if (Enemy.deathEnemyCount >= CurrentEnemyCount)
         {
-            print("Stage Passed");
-            
-            isStagePassed = true;
-            stage++;
-            enemyCountByStage = stage + 1;
             Enemy.deathEnemyCount = 0;
-            StartCoroutine(ShowStageScreen());
-            StartCoroutine(GenerateNewStageEnemies(enemyCountByStage));
+            isStagePassed = true;
         }
-        else
+        
+        if (isStagePassed)
         {
-            print("Stage can not be passed");
             isStagePassed = false;
+            StartCoroutine(StageTimer());
         }
     }
     
-    private IEnumerator GenerateNewStageEnemies(int enemyCount)
+    private IEnumerator StageTimer()
     {
-        if(enemyCount == 0) throw new ArgumentException("enemyCount can't be 0");
+        print("sdfhjksdfhjkdfhjksdfhjksfsdjhdfjhsdfhjksdfhjksdjkhfjkdshjkhsjkdjkf");
+        yield return new WaitForSeconds(stageTimer);
+        stageCount++;
+        CurrentStage = stageCount;
+        CurrentEnemyCount = stageCount + enemyCountIncrement;
+        EnemyInstantiateController(CurrentEnemyCount);
         
-        yield return new WaitForSeconds(waitTimeForStagePass + 4f);
+        print(CurrentEnemyCount);
+    }
+    
+    private void EnemyInstantiateController(int currentEnemyCount)
+    {
+        int poolCount = enemyPooling.enemiesScriptInPool.Count;
+        int difference = currentEnemyCount - poolCount;
 
-        var enemyPooling = EnemyPooling.Instance;
-        List<Enemy> enemyScriptsInPool = enemyPooling.enemiesScriptInPool;
-        int difference = enemyCount - enemyScriptsInPool.Count;
-        
-        print("Enemy Script count in pool" +enemyScriptsInPool.Count);
-
-        for (int i = enemyScriptsInPool.Count - 1; i >= 0; i--)
+        for (int i = poolCount - 1; i >= 0; i--)
         {
-            EnemyPooling.Instance.ReturnEnemyFromPool(enemyScriptsInPool[i]);
+            enemyPooling.ReturnEnemyFromPool(enemyPooling.enemiesScriptInPool[i]);
         }
         
         enemyGenerator.InstantiateEnemyWithCount(difference);
-        
     }
     
-
-    // ReSharper disable Unity.PerformanceAnalysis
-    private IEnumerator ShowStageScreen()
-    {
-        AssignDetailsOfStage();
-        UIManager.Instance.ShowVictoryScreen(true);
-        yield return new WaitForSeconds(waitTimeForStagePass);
-        UIManager.Instance.ShowVictoryScreen(false);
-        UIManager.Instance.ShowCardSelectionScreen(true);
-    }
-    
-    private void AssignDetailsOfStage()
-    {
-        enemyImage.sprite = enemyTypeSprite;
-        stageNumberText.text = stage.ToString();
-    }
 }

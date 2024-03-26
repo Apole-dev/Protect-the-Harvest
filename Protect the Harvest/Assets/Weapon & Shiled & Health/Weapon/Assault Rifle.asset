@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Assault Rifle
   m_EditorClassIdentifier: 
   rarity: 0
-  damage: 5
+  effectValue: 11
   range: 5
-  weaponPrefab: {fileID: 0}
-  weaponImage: {fileID: 0}
+  objectPrefab: {fileID: 0}
+  objectImage: {fileID: 0}

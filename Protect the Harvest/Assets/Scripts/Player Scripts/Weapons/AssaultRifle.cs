@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Enums;
 using Game_Scriptable_Objects;
+using Game_Scriptable_Objects.Weapon;
 using UnityEngine;
 
 namespace Player_Scripts.Weapons
@@ -22,10 +23,10 @@ namespace Player_Scripts.Weapons
             EffectType = EffectType.PlayerAssaultRifleAttackEffect;
         }
         
-        public override AllScriptableData AssignNewWeapon()
+        public override ObjectsScriptableData AssignNewWeapon()
         {
             var index = UnityEngine.Random.Range(0, assaultRifle.Count);
-            Damage = assaultRifle[index].damage;
+            Damage = assaultRifle[index].effectValue;
             Range = assaultRifle[index].range;
             
             return assaultRifle[index];

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MachineGun
   m_EditorClassIdentifier: 
   rarity: 1
-  damage: 10
+  effectValue: 15
   range: 19
-  weaponPrefab: {fileID: 0}
-  weaponImage: {fileID: 0}
+  objectPrefab: {fileID: 0}
+  objectImage: {fileID: 0}
