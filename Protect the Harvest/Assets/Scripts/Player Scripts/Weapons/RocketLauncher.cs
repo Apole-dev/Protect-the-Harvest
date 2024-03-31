@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Enums;
 using Game_Scriptable_Objects;
@@ -8,9 +9,11 @@ using UnityEngine;
 
 namespace Player_Scripts.Weapons
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class RocketLauncher : Weapon
     {
         [SerializeField] private List<RocketLauncherScriptableObject> rocketLaunchers;
+        [SerializeField] private GameObject hitTrail;
         #region Abstracts
         public override int Damage { get; protected set; } = 5; //Normal value
         public override int Range { get; protected set; } = 3; //Normal value
@@ -21,11 +24,28 @@ namespace Player_Scripts.Weapons
 
         #endregion
         
+        private Rigidbody _rb;
+        private float _bulletSpeed;
+        private bool _isShot;
+        private Vector3 _shootPosition;
 
         private void Awake()
         {
+            _rb = GetComponent<Rigidbody>();
+            
             GunType = GunType.RocketLauncher;
             EffectType = EffectType.PlayerRocketLauncherAttackEffect;
+            
+            
+        }
+
+        private void FixedUpdate()
+        {
+            if (_isShot)
+            {
+                //bug fix if character not move object not moving
+                _rb.position += _shootPosition * (_bulletSpeed * Time.fixedDeltaTime);
+            }
         }
 
         public override ObjectsScriptableData AssignNewWeapon()
@@ -33,39 +53,36 @@ namespace Player_Scripts.Weapons
             int index = UnityEngine.Random.Range(0, rocketLaunchers.Count);
             Damage = rocketLaunchers[index].effectValue;
             Range = rocketLaunchers[index].range;
-            
+            _bulletSpeed = rocketLaunchers[index].bulletSpeed;
             return rocketLaunchers[index];
         }
 
-        public override void HitController()
+        // ReSharper disable Unity.PerformanceAnalysis
+        public override void Shoot(bool isHit)
         {
-            Vector3 hitPosition = PlayerShootPoint.position + PlayerShootPoint.forward * Range;
-            hitTestObject.transform.position = hitPosition;
-            var hitObjects = Physics.OverlapSphere(hitPosition, 1f, LayerMask.GetMask("Enemy")); 
-            print(hitObjects.Length);
-            if (hitObjects.Length > 6) return; 
-          
-            foreach (var coll in hitObjects)
-            {
-                print(coll.name);
-                coll.transform.gameObject.GetComponent<IEnemy>().ReduceHealth(Damage);
-            }
+            base.Shoot(isHit);
+            gameObject.SetActive(true);
+            _isShot = true;
+            //StartCoroutine(ResetIsShoot());
+            _shootPosition = PlayerShootPoint.forward;
+        }
+        
+        private IEnumerator ResetIsShoot()
+        {
+            yield return new WaitForSeconds(3f);
+            _isShot = false;
         }
 
-        protected override void OnParticleCollision(GameObject other)
+        private void OnCollisionEnter(Collision other)
         {
             if (other.gameObject.CompareTag("Enemy"))
             {
-                var hitObjects = Physics.OverlapSphere(other.transform.position, 1f, LayerMask.GetMask("Enemy")); 
-                print(hitObjects.Length);
-                if (hitObjects.Length > 6) return; 
-          
-                foreach (var coll in hitObjects)
-                {
-                    print(coll.name);
-                    coll.transform.gameObject.GetComponent<IEnemy>().ReduceHealth(Damage);
-                }  
+                other.gameObject.GetComponent<IEnemy>().ReduceHealth(Damage);
+                var  trail = Instantiate(hitTrail,other.transform.position,Quaternion.identity);
+                Destroy(trail,0.5f);
+                gameObject.SetActive(false);
             }
         }
+        
     }
 }

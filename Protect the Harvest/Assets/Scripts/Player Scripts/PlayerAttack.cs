@@ -13,6 +13,8 @@ namespace Player_Scripts
         [Header("Scripts Accessors")]
         [SerializeField] private Inventory playerInventory;
 
+        [SerializeField] private GameObject shootPoint;
+
         [Space]
 
         [Header("Line Renderer Settings")]
@@ -45,8 +47,6 @@ namespace Player_Scripts
 
             if (ButtonPressController.isPressed)
                 StartCoroutine(AttackInRate());
-            
-            
         }
           
 
@@ -63,17 +63,7 @@ namespace Player_Scripts
         }
         private void Attack()
         {
-            // if (!_isHitEnemy) return;
-            //                         
-            // PlayShootByType(transform, enemyGameObject.transform, _isHitEnemy);
-            // var component = enemyGameObject.GetComponent<IEnemy>();
-            // component.ReduceHealth(playerDamage:currentDamage);//TODO
-            // component.PushBack(300f);
-            // component.ChangeColor();
-            // component.HitText(0.2f,currentDamage,Color.yellow);
-            
-            
-            PlayShootByType(transform,transform, _isHitEnemy);
+            PlayShootByType(shootPoint.transform,transform, _isHitEnemy);
         }
         
         #endregion
@@ -91,41 +81,6 @@ namespace Player_Scripts
             
             #endregion
             
-            #region Raycast
-            /*
-            if (Physics.Raycast(origin, transformDirection, out var hit, gunShootDistance, enemyMask))
-            {
-                //REFACTOR WE DONT NEED TO ALSO ADD IF SECTION MASK ALREADY IMITATED
-                
-                //Assign the color when it hit
-                lineRenderer.material.color = hitColor;
-
-                //Check if the hit object is an enemy
-                if (hit.collider.gameObject.CompareTag("Enemy"))
-                {
-                    //Set the gunShootDistance to the hit distance
-                    gunShootDistance = hit.distance;
-                    
-                    //Set the hit value
-                    _isHitEnemy = true;
-                    
-                    //Set the enemy
-                    enemyGameObject = hit.collider.gameObject; 
-                }
-            }
-            else
-            {
-                //Assign the color when it not hit
-                lineRenderer.material.color = notHitColor;
-                
-                //Reset the gunShootDistance turn into old value
-                gunShootDistance = currentGunType.GetHashCode();
-                
-                //Reset the hit value
-                _isHitEnemy = false;
-            }
-            */
-            #endregion
         }
         
 

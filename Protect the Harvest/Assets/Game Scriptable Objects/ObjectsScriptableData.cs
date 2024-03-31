@@ -8,9 +8,10 @@ namespace Game_Scriptable_Objects
     {
         public Rarity rarity;
         public int effectValue;
+        public int fireRate;
+        public float bulletSpeed;
         public int range;
         public GameObject objectPrefab;
         public Image objectImage;
-        public ParticleSystem particle;
     }
 }
