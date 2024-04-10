@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
 using UnityEngine;
 using Managers;
 using Game_Scriptable_Objects;
+using Particle_System;
 using Player_Scripts.Weapons;
 using TMPro;
-using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 
 namespace Player_Scripts
@@ -36,13 +37,14 @@ namespace Player_Scripts
         [SerializeField] private TMP_Text shieldRarityText;
 
         [Header("Attributes")]
-        public Weapon selectedWeapon;
+        public Weapon selectedWeaponType;
         [SerializeField] private ObjectsScriptableData newWeapon;
         [SerializeField] private List<Weapon> weaponsList;
         
         [SerializeField] private Fence fence;
         [SerializeField] private PlayerHeal playerHeal;
         [SerializeField] private PlayerAttack playerAttack;
+        
         
 
         #endregion
@@ -55,12 +57,13 @@ namespace Player_Scripts
             UIManager.Instance.ShowCardSelectionScreen(true);
             
             CheckReferences();
-            AssignPrimaryWeaponAttributes();
-            AssignPrimaryShieldAttributes();
-            AssignPrimaryHealthAttributes();
+            // AssignPrimaryWeaponAttributes();
+            // AssignPrimaryShieldAttributes();
+            // AssignPrimaryHealthAttributes();
             
         }
         
+
         #endregion
 
         #region UI and Card Selection Logic
@@ -78,15 +81,9 @@ namespace Player_Scripts
 
         private void AssignPrimaryWeaponAttributes()
         {
-            selectedWeapon = weaponsList[Random.Range(0, weaponsList.Count)]; //Get Random Weapon Type From Weapon List
-            newWeapon = selectedWeapon.AssignNewWeapon(); //Selected Weapon 
-            //gunImage.sprite = newWeapon.weaponImage.sprite;
-            gunRarityText.text = newWeapon.rarity.ToString();
-            
-            //Assign Current Damage and Range
-            playerAttack.currentGunType = selectedWeapon.GunType;
-            playerAttack.currentDamage = newWeapon.effectValue;
-            playerAttack.currentRange = newWeapon.range;
+            selectedWeaponType = weaponsList[Random.Range(0, weaponsList.Count)]; //Get Random Weapon Type From Weapon List
+            newWeapon = selectedWeaponType.AssignNewWeapon(); //Get Random Weapon From Weapon Type
+            playerAttack.ChangeWeapon(selectedWeaponType,newWeapon);
         }
         
         private void AssignPrimaryHealthAttributes()

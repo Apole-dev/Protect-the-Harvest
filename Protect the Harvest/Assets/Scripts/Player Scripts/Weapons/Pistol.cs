@@ -2,6 +2,7 @@
 using Enums;
 using Game_Scriptable_Objects;
 using Game_Scriptable_Objects.Weapon;
+using Interfaces;
 using UnityEngine;
 
 namespace Player_Scripts.Weapons
@@ -9,6 +10,7 @@ namespace Player_Scripts.Weapons
     public class Pistol : Weapon
     {
         [SerializeField] private List<PistolScriptableObject> pistolObjects;
+        
         public override int Damage { get; protected set; }
         public override int Range { get; protected set; }
         public override GunType GunType { get; protected set; }
@@ -16,6 +18,8 @@ namespace Player_Scripts.Weapons
         public override Transform PlayerShootPoint { get; set; }
         public override Transform EnemyShootPoint { get; set; }
 
+
+        public PistolScriptableObject selectedWeapon;
         private void Awake()
         {
             GunType = GunType.Pistol;
@@ -28,7 +32,29 @@ namespace Player_Scripts.Weapons
             Damage = pistolObjects[index].effectValue;
             Range = pistolObjects[index].range;
             
-            return pistolObjects[index];
+            selectedWeapon = pistolObjects[index];
+            return selectedWeapon;
+        }
+
+        public override GameObject Shoot()
+        {
+            base.Shoot();
+            PlayerShootPoint = GameObject.FindWithTag("Shoot Point").transform;
+            var bullet = Instantiate(selectedWeapon.bulletPrefab, PlayerShootPoint.position, PlayerShootPoint.rotation);
+            bullet.transform.parent = null;
+            
+            return bullet;
+        }
+
+        public override void Hit(GameObject hitObject)
+        {
+            print("hit pistol");
+            IEnemy component = hitObject.GetComponent<IEnemy>();
+            
+            component.ReduceHealth(10);
+            component.PushBack(80f);
+            component.ChangeColor(); 
+            component.HitText(1f,selectedWeapon.effectValue,Color.red);
         }
     }
 }

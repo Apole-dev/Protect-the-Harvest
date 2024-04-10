@@ -16,6 +16,10 @@ MonoBehaviour:
   effectValue: 17
   fireRate: 3
   bulletSpeed: 82.7
+  bulletLifeTime: 0
+  pushAmount: 0
   range: 11
   objectPrefab: {fileID: 0}
+  particlePrefab: {fileID: 2074991969024825308, guid: cc80d2ae60987f147bddd4f2a6fc72c8,
+    type: 3}
   objectImage: {fileID: 0}

@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rarity: 0
   effectValue: 11
+  fireRate: 0
+  bulletSpeed: 0
+  bulletLifeTime: 0
+  pushAmount: 0
   range: 5
   objectPrefab: {fileID: 0}
+  particlePrefab: {fileID: 2074991969024825308, guid: cc80d2ae60987f147bddd4f2a6fc72c8,
+    type: 3}
   objectImage: {fileID: 0}

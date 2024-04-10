@@ -35,15 +35,24 @@ namespace Player_Scripts.Weapons
             }
             HitController();
         }
+
+        public virtual GameObject Shoot()
+        {
+            // EffectManager.Instance.PlayPlayerEffect(EffectType,PlayerShootPoint);
+            // AudioManager.Instance.PlayGunSound(GunType);
+            HitController();
+            return null;
+        }
         public virtual void HitController()
         {
-            LayerMask enemyLayerMask = LayerMask.GetMask("Enemy");
             hitTestObject = GameObject.FindWithTag("Hit Cube");
+            PlayerShootPoint = GameObject.FindWithTag("Shoot Point").transform;
             hitTestObject.transform.position = PlayerShootPoint.position+PlayerShootPoint.forward*Range;
-            if (Physics.Raycast(PlayerShootPoint.position, PlayerShootPoint.forward,out var hit, Range, enemyLayerMask))
-            {
-               hit.transform.gameObject.GetComponent<IEnemy>().ReduceHealth(Damage);
-            }
+        }
+
+        public virtual void Hit(GameObject hitObject)
+        {
+            print("hit");
         }
         
         protected int GetWeaponDamage()
@@ -55,13 +64,6 @@ namespace Player_Scripts.Weapons
         {
             return GunType.GetHashCode();
         }
-
-        protected virtual void OnParticleCollision(GameObject other)
-        {
-            if (other.gameObject.CompareTag("Enemy"))
-            {
-                other.GetComponent<IEnemy>().ReduceHealth(Damage);
-            }
-        }
+        
     }
 }

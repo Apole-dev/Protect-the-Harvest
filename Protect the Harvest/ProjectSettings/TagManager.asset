@@ -8,6 +8,7 @@ TagManager:
   - Spawn Manger Object
   - Fence
   - Hit Cube
+  - Shoot Point
   layers:
   - Default
   - TransparentFX
