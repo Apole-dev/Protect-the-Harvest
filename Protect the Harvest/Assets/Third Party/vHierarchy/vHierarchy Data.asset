@@ -29,6 +29,9 @@ MonoBehaviour:
         - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1173966271-0
         - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1075701096-0
         - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-763246685-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-1302424123-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-3698581989374523976-0
+        - GlobalObjectId_V1-2-c850ee8c3b14cc8459e7e186857cf567-265115154-0
         values:
         - iColor: 0
           icon: MeshCollider Icon
@@ -50,8 +53,14 @@ MonoBehaviour:
           icon: MeshCollider Icon
         - iColor: 0
           icon: MeshCollider Icon
+        - iColor: 0
+          icon: Rigidbody Icon
+        - iColor: 0
+          icon: AvatarMask On Icon
+        - iColor: 0
+          icon: StandaloneInputModule Icon
       goDatasByInstanceId:
-        keys: 406d0000806d0000d06c0000a06d0000006d0000e46c00007a6d00001c6e0000c8d6feffc6d6feff
+        keys: 2e6e00008c6e00009c6d0000b86e0000d86d0000b86d00007c6e00002c6f0000086f0000826e00003e6f00009c7000008ee9ffff
         values:
         - iColor: 0
           icon: MeshCollider Icon
@@ -73,6 +82,12 @@ MonoBehaviour:
           icon: MeshCollider Icon
         - iColor: 0
           icon: MeshCollider Icon
+        - iColor: 0
+          icon: Rigidbody Icon
+        - iColor: 0
+          icon: AvatarMask On Icon
+        - iColor: 0
+          icon: StandaloneInputModule Icon
     - goDatasByGlobalId:
         keys: []
         values: []

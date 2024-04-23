@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Enemy_Scripts
 {
-    public class EnemyMovement : MonoSingleton<EnemyMovement>
+    public sealed class EnemyMovement : MonoBehaviour
     {
         
         [SerializeField] private GameObject playerGameObject;

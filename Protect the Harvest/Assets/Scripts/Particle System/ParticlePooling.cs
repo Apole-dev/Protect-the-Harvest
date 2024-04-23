@@ -22,7 +22,16 @@ namespace Particle_System
             {
                 return null;
             }
-            return _particleList[Random.Range(0, _particleList.Count)];
+
+            GameObject particleFromPool = _particleList[Random.Range(0, _particleList.Count)];
+            _particleList.Remove(particleFromPool);
+            return particleFromPool;
+        }
+
+
+        public int GetParticleCount()
+        {
+            return _particleList.Count;
         }
     }
 }

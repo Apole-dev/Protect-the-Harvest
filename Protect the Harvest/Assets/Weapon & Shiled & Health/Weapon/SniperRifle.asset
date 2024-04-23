@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: SniperRifle
   m_EditorClassIdentifier: 
   rarity: 1
-  effectValue: 13
-  fireRate: 0
-  bulletSpeed: 0
-  bulletLifeTime: 0
-  pushAmount: 0
+  effectValue: 8
+  fireRate: 1
+  bulletSpeed: 53.89
+  bulletLifeTime: 5
+  pushAmount: 18.02
   range: 27
   objectPrefab: {fileID: 0}
-  particlePrefab: {fileID: 2074991969024825308, guid: cc80d2ae60987f147bddd4f2a6fc72c8,
+  bulletPrefab: {fileID: 1964161560254754629, guid: 15b8ad6fb05b0cf46ae21e9f0ac549af,
     type: 3}
   objectImage: {fileID: 0}

@@ -9,7 +9,8 @@ namespace Game_Scriptable_Objects
         public Rarity rarity;
         
         public int effectValue;
-        public int fireRate;
+        [Tooltip("Fire Rate Per Second")] [Range(0, 3)]
+        public float fireRate;
         public float bulletSpeed;
         public float bulletLifeTime;
         public float pushAmount;

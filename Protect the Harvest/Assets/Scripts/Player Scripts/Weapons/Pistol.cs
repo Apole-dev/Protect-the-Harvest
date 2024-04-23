@@ -31,18 +31,14 @@ namespace Player_Scripts.Weapons
             int index = Random.Range(0, pistolObjects.Count);
             Damage = pistolObjects[index].effectValue;
             Range = pistolObjects[index].range;
-            
             selectedWeapon = pistolObjects[index];
+            WriteDataOfWeapon();
             return selectedWeapon;
         }
 
         public override GameObject Shoot()
         {
-            base.Shoot();
-            PlayerShootPoint = GameObject.FindWithTag("Shoot Point").transform;
-            var bullet = Instantiate(selectedWeapon.bulletPrefab, PlayerShootPoint.position, PlayerShootPoint.rotation);
-            bullet.transform.parent = null;
-            
+            var bullet = InstantiateBullet(selectedWeapon.bulletPrefab);
             return bullet;
         }
 

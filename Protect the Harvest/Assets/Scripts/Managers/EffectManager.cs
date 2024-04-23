@@ -100,7 +100,7 @@ namespace Managers
 
         public void PlayEnemyHitEffect(Transform enemyTransform)
         {
-            enemyDeathEffect.transform.position = enemyTransform.position;
+            enemyHitEffect.transform.position = enemyTransform.position;
             enemyHitEffect.Play();
         }
         

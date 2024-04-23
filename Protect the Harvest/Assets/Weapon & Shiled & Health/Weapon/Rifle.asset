@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rarity: 3
   effectValue: 14
-  fireRate: 0
-  bulletSpeed: 0
-  bulletLifeTime: 0
-  pushAmount: 0
+  fireRate: 3
+  bulletSpeed: 34
+  bulletLifeTime: 29.09
+  pushAmount: 3.74
   range: 20
   objectPrefab: {fileID: 0}
-  particlePrefab: {fileID: 2074991969024825308, guid: cc80d2ae60987f147bddd4f2a6fc72c8,
+  bulletPrefab: {fileID: 3657652498075761608, guid: a295731b5aba410468101c3e3298621f,
     type: 3}
   objectImage: {fileID: 0}

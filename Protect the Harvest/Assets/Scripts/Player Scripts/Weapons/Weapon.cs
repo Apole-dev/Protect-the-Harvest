@@ -36,13 +36,7 @@ namespace Player_Scripts.Weapons
             HitController();
         }
 
-        public virtual GameObject Shoot()
-        {
-            // EffectManager.Instance.PlayPlayerEffect(EffectType,PlayerShootPoint);
-            // AudioManager.Instance.PlayGunSound(GunType);
-            HitController();
-            return null;
-        }
+        public abstract GameObject Shoot();
         public virtual void HitController()
         {
             hitTestObject = GameObject.FindWithTag("Hit Cube");
@@ -52,18 +46,27 @@ namespace Player_Scripts.Weapons
 
         public virtual void Hit(GameObject hitObject)
         {
-            print("hit");
-        }
-        
-        protected int GetWeaponDamage()
-        {
-            return Damage;
+            if(hitObject == null) return;
+
+            if (hitObject.CompareTag("Enemy"))
+            {
+                hitObject.GetComponent<IEnemy>().ReduceHealth(Damage);
+                print("Enemy Hit");
+            }
         }
 
-        protected int GetWeaponRange()
+        protected virtual void WriteDataOfWeapon()
         {
-            return GunType.GetHashCode();
+            print("Damage: " +Damage);
+            print("Range: " +Range);
         }
-        
+
+        protected GameObject InstantiateBullet(GameObject bulletPrefab)
+        {
+            print("Shotgun Shoot");
+            PlayerShootPoint = GameObject.FindWithTag("Shoot Point").transform;
+            var bullet = Instantiate(bulletPrefab, PlayerShootPoint.position, PlayerShootPoint.rotation);
+            return bullet;
+        }
     }
 }

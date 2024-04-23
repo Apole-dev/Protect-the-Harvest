@@ -3,27 +3,29 @@ using Managers;
 using Player_Scripts;
 using Singleton;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Enemy_Scripts
 {
-    public class EnemyAttack : MonoSingleton<EnemyAttack> 
+    public class EnemyAttack : MonoSingleton<EnemyAttack>
     {
-        [SerializeField] private ParticleSystem enemyAttackEffect;
-        [SerializeField] private GameObject enemyAttackCenter;
+        public GameObject enemyAttackParticleObject;
+        public Transform enemyAttackPoint;
+
         
         
-        private PlayerHeal _playerHeal;
-        
-        private void Awake()
+        public GameObject InstantiateEnemyAttackParticle()
         {
-            enemyAttackEffect.transform.position = enemyAttackCenter.transform.position.AddHeight(0.5f);
-            _playerHeal = FindObjectOfType<PlayerHeal>();
+            return Instantiate(enemyAttackParticleObject, RandomPositionForParticle(), Quaternion.identity);
         }
 
-        public void Attack(int enemyDamage)
+        private Vector3 RandomPositionForParticle()
         {
-            print("Player did hit the circle");
-            _playerHeal.ReduceHealth(enemyDamage);   
+            var position = enemyAttackPoint.position;
+            float randomX = Random.Range(position.x - 5f, position.x + 5f);
+            float randomZ = Random.Range( position.z - 5f, position.z + 5f);
+            
+            return new Vector3(randomX, 0.3f, randomZ);
         }
         
     }

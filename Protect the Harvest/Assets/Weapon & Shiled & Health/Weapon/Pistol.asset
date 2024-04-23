@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rarity: 2
   effectValue: 3
-  fireRate: 12
-  bulletSpeed: 20.77
-  bulletLifeTime: 19.4
-  pushAmount: 7.29
+  fireRate: 2
+  bulletSpeed: 10
+  bulletLifeTime: 8
+  pushAmount: 50
   range: 12
   objectPrefab: {fileID: 0}
   bulletPrefab: {fileID: 2074991969024825308, guid: cc80d2ae60987f147bddd4f2a6fc72c8,

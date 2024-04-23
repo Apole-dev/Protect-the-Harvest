@@ -16,6 +16,9 @@ namespace Player_Scripts.Weapons
         public override Transform PlayerShootPoint { get; set; }
         public override Transform EnemyShootPoint { get; set; }
 
+        private MachineGunScriptableObject _selectedWeapon;
+        
+
         private void Awake()
         {
             GunType = GunType.MachineGun;
@@ -28,7 +31,15 @@ namespace Player_Scripts.Weapons
             Damage = machineGuns[index].effectValue;
             Range = machineGuns[index].range;
             
-            return machineGuns[index];
+            _selectedWeapon = machineGuns[index];
+            return _selectedWeapon;
+        }
+
+        public override GameObject Shoot()
+        {
+            print("Machine Gun Shoot");
+            var bullet = InstantiateBullet(_selectedWeapon.bulletPrefab);
+            return bullet;
         }
     }
 }

@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: MachineGun
   m_EditorClassIdentifier: 
   rarity: 1
-  effectValue: 15
-  fireRate: 0
-  bulletSpeed: 0
-  bulletLifeTime: 0
-  pushAmount: 0
-  range: 19
+  effectValue: 6
+  fireRate: 3
+  bulletSpeed: 20
+  bulletLifeTime: 3.04
+  pushAmount: 5
+  range: 15
   objectPrefab: {fileID: 0}
-  particlePrefab: {fileID: 2074991969024825308, guid: cc80d2ae60987f147bddd4f2a6fc72c8,
+  bulletPrefab: {fileID: 4870641394691373304, guid: d7bc261e868897a44b86b9165c6a7b17,
     type: 3}
   objectImage: {fileID: 0}

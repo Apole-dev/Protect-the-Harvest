@@ -23,6 +23,7 @@ namespace Player_Scripts.Weapons
         #endregion
         
         public float Radius { get; private  set; }
+        public ShotgunScriptableObject selectedWeapon;
 
         private void Awake()
         {
@@ -36,22 +37,32 @@ namespace Player_Scripts.Weapons
             Damage = shotguns[index].effectValue;
             Range = shotguns[index].range;
             Radius = shotguns[index].hitRadius;
-            return shotguns[index];
+            selectedWeapon =  shotguns[index];
+            WriteDataOfWeapon();
+            return selectedWeapon;
         }
 
-        public override void HitController()
+        public override GameObject Shoot()
         {
-            Vector3 hitPosition = PlayerShootPoint.position + PlayerShootPoint.forward * Range;
-            hitTestObject.transform.position = hitPosition;
-            var hitObjects = Physics.OverlapSphere(hitPosition, 1f, LayerMask.GetMask("Enemy")); 
-            print(hitObjects.Length);
-            if (hitObjects.Length > 4) return; 
-          
-            foreach (var coll in hitObjects)
+            var bullet = InstantiateBullet(selectedWeapon.bulletPrefab);
+            return bullet;
+        }
+
+        public override void Hit(GameObject hitObject)
+        {
+            var position = hitObject.transform.position;
+            var colliders = Physics.OverlapSphere(hitObject.transform.position, Radius, LayerMask.GetMask("Enemy"));
+            if (colliders == null) return;
+
+            foreach (var collider in colliders)
             {
-                print(coll.name);
-                coll.transform.gameObject.GetComponent<IEnemy>().ReduceHealth(Damage);
+                var component = collider.gameObject.GetComponent<IEnemy>();
+                
+                component.ReduceHealth(selectedWeapon.effectValue);
+                component.ChangeColor();
+                component.HitText(1f,selectedWeapon.effectValue,Color.blue);
             }
+
         }
     }
 }

@@ -32,8 +32,7 @@ namespace Enemy_Scripts
 
         
         #region Enemy Object Acsseser
-
-        private ParticleCollisionDetector _particleCollisionDetector;
+        
         private Slider _enemyHealthBar;
         private bool _attackTimerController = true;
         private SkinnedMeshRenderer[] _hitPart ;
@@ -62,7 +61,7 @@ namespace Enemy_Scripts
         }
         private void OnDisable()
         {
-            _isCollidingWithFence = false;
+            StopAllCoroutines();
         }
         
         private void Awake()
@@ -70,7 +69,7 @@ namespace Enemy_Scripts
             _hitPart = GetComponentsInChildren<SkinnedMeshRenderer>();
             _hitText = GetComponentInChildren<TMP_Text>();
             
-            _particleCollisionDetector = FindObjectOfType<ParticleCollisionDetector>();
+            
             _enemyMovement = FindObjectOfType<EnemyMovement>();
             _effectManager = FindObjectOfType<EffectManager>();
             _enemyAttack = FindObjectOfType<EnemyAttack>();
@@ -96,8 +95,7 @@ namespace Enemy_Scripts
         
         private void Update()
         {
-            Attack();
-            print(_isCollidingWithFence);
+            
         }
 
         private void FixedUpdate()
@@ -111,43 +109,6 @@ namespace Enemy_Scripts
 
         #region Attack & Health
         
-        /// <summary>
-        /// Attack when "isAttacking" is true and if "particleCollisionDetector.isEnemyAttackHit" is true
-        /// it will call "Attack()" function after that "particleCollisionDetector.isEnemyAttackHit" will be false
-        /// </summary>
-        private void Attack()
-        {
-            if (_attackTimerController)
-            {
-                StartCoroutine(AttackTimer());
-                _attackTimerController = false;
-            }
-            
-            if (isAttacking)
-            {
-                print("isAttacking");
-                _effectManager.PlayEnemyAttackEffect();
-                isAttacking = false;
-            }       
-            if (_particleCollisionDetector.isEnemyAttackHit)
-            {
-                _enemyAttack.Attack(Damage);
-                _particleCollisionDetector.isEnemyAttackHit = false;
-            }
-        }
-        
-        /// <summary>
-        /// Attack timer, when enemy shoots it will stop "isAttacking" after 2 seconds
-        /// and enemy will be stop when enemy shooting
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator AttackTimer()
-        {
-            isAttacking = true;
-            yield return new WaitForSeconds(FireRate);
-            isAttacking = false;
-            _attackTimerController = true;
-        }
         
         
         public void ReduceHealth(float playerDamage)
@@ -258,7 +219,7 @@ namespace Enemy_Scripts
     
             while (elapsedTime < duration)
             {
-                _hitText.transform.localScale = Vector3.Lerp(Vector3.one * 10, Vector3.zero, elapsedTime / duration);
+                _hitText.transform.localScale = Vector3.Lerp(Vector3.one * 5, Vector3.zero, elapsedTime / duration);
                 elapsedTime += Time.deltaTime;
 
                 yield return null;
@@ -313,11 +274,12 @@ namespace Enemy_Scripts
             if (other.gameObject.CompareTag("Fence"))
             {
                 //TODO: Reduce Fence Shield
-                _isCollidingWithFence = true;
-                if (_isCollidingWithFence)
+
+                if (gameObject.activeSelf == true)
                 {
-                    StartCoroutine(AttackFenceTimer());
+                   
                 }
+                
                 //TODO: Enemy Fence Attack Animation
             }
         }

@@ -31,6 +31,10 @@ namespace Player_Scripts.Weapons
             
             return assaultRifle[index];
         }
-        
+
+        public override GameObject Shoot()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
