@@ -26,6 +26,9 @@ namespace Player_Scripts.Weapons
 
         public virtual void Shoot(bool isHit)
         {
+            print("General Shoot is called");
+            
+            
             EffectManager.Instance.PlayPlayerEffect(EffectType,PlayerShootPoint);
             AudioManager.Instance.PlayGunSound(GunType);
 

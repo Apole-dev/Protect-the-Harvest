@@ -93,10 +93,6 @@ namespace Enemy_Scripts
             _enemyHealthBar.value = Health;
         }
         
-        private void Update()
-        {
-            
-        }
 
         private void FixedUpdate()
         {
