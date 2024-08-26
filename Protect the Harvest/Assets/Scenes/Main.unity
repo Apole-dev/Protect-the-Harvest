@@ -6436,7 +6436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1b6309e79f04eee80ac1c233b962457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyHitEffect: {fileID: 0}
+  enemyHitEffect: {fileID: 1704139916}
   enemyDeathEffect: {fileID: 1704139916}
   enemyAttackEffect: {fileID: 1822304333}
   playerHitEffect: {fileID: 0}
